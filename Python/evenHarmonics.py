@@ -9,7 +9,7 @@ plt.subplots_adjust(bottom=0.25)
 fig.suptitle('Even Harmonics')
 ax1.set(ylim=(-1.0, 1.0))
 
-# Even harmoncis saturation function
+# Even harmonics saturation function
 def even(sample, power, mix):
   dry = np.clip(sample, -1.0, 1.0)
   wet = dry ** power
