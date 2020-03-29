@@ -26,14 +26,24 @@ CrispySaturatorAudioProcessor::CrispySaturatorAudioProcessor()
 #endif
 parameters (*this, &undoManager, Identifier ("APVTSTutorial"),
 {
-    std::make_unique<AudioParameterFloat> (Constants::IN_GAIN, "In Gain", 0.0f, 24.0f, 0.0f),
+    std::make_unique<AudioParameterFloat> (Constants::ID_IN_GAIN, "In Gain", 0.0f, 24.0f, 0.0f),
     
-    std::make_unique<AudioParameterFloat> (Constants::ODD_POWER, "Odd Power", NormalisableRange<float>(1.0f, 100.0f, 0.1f,
-                                                                                                std::log (0.5f) / std::log ((10.0 - 1.0) / (100.0 - 10.0))), 10.0f),
-    std::make_unique<AudioParameterFloat> (Constants::EVEN_POWER, "Even Power", 1.0f, 8.0f, 2.0f),
-    std::make_unique<AudioParameterFloat> (Constants::EVEN_MIX, "Even Mix", 0.0f, 1.0f, 0.0f),
+    std::make_unique<AudioParameterFloat> (Constants::ID_LOW_PASS_FREQ, "Low Pass Frequency", 20.0f, 20000.0f, 20000.0f),
+    std::make_unique<AudioParameterFloat> (Constants::ID_HI_PASS_FREQ, "High Pass Frequency", 20.0f, 20000.0f, 20.0f),
     
-    std::make_unique<AudioParameterFloat> (Constants::OUT_GAIN, "Out Gain", -24.0f, 0.0f, 0.0f),
+    std::make_unique<AudioParameterFloat> (Constants::ID_NORMALIZE_ATTACK, "Normalize Attack", 0.0f, 500.0f, 0.0f),
+    std::make_unique<AudioParameterFloat> (Constants::ID_NORMALIZE_RELEASE, "Normalize Release", 0.0f, 500.0f, 50.0f),
+    std::make_unique<AudioParameterFloat> (Constants::ID_NORMALIZE_AMOUNT, "Normalize Amount", 0.0f, 1.0f, 0.0f),
+    
+    std::make_unique<AudioParameterFloat> (Constants::ID_ODD, "Odd Harmonics",
+                                           NormalisableRange<float>(1.0f, 100.0f, 0.1f, std::log (0.5f) / std::log ((10.0 - 1.0) / (100.0 - 10.0)))
+                                           , 10.0f),
+    std::make_unique<AudioParameterFloat> (Constants::ID_EVEN, "Even Harmonics", 0.0f, 1.0f, 0.0f),
+    std::make_unique<AudioParameterBool> (Constants::ID_EVEN_SMOOTH, "Smooth Even Shape", true),
+    
+    std::make_unique<AudioParameterFloat> (Constants::ID_WET_DRY, "Wet/Dry Mix", 0.0f, 1.0f, 1.0f),
+    
+    std::make_unique<AudioParameterFloat> (Constants::ID_OUT_GAIN, "Out Gain", -24.0f, 0.0f, 0.0f),
 })
 , crispyEngine(parameters)
 {

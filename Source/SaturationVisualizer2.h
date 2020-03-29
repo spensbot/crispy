@@ -28,11 +28,11 @@ public:
         
     }
     
-    void reset (float _oddPower, float _evenPower, float _evenMix)
+    void reset (float _odd, float _even, bool _evenSmooth)
     {
-        oddPower = _oddPower;
-        evenPower = _evenPower;
-        evenMix = _evenMix;
+        odd = _odd;
+        even = _even;
+        evenSmooth = _evenSmooth;
         updateBuffer();
     }
 
@@ -69,9 +69,9 @@ private:
     const float startAngle = -MathConstants<float>::pi;
     const float length = MathConstants<float>::twoPi;
     
-    float oddPower = 1.0f;
-    float evenPower = 2.0f;
-    float evenMix = 0.0f;
+    float odd = 1.0f;
+    float even = 0.0f;
+    bool evenSmooth = true;
     
     void updateBuffer(){
         int numSamples = buffer.getNumSamples();
@@ -80,7 +80,7 @@ private:
         
         for (int sample=0 ; sample < numSamples ; sample++){
             float value = std::sin(pos);
-            float saturatedValue = CrispySaturator::saturateSample(value, oddPower, evenPower, evenMix);
+            float saturatedValue = CrispySaturator::saturateSample(value, odd, even, evenSmooth);
             buffer.setSample(0, sample, saturatedValue);
             
             pos += radsPerSample;

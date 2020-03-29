@@ -18,8 +18,8 @@ CrispySaturatorAudioProcessorEditor::CrispySaturatorAudioProcessorEditor (Crispy
 ,parameters(p.parameters)
 ,inBufferDrawer(p.crispyEngine.inBuffer.buffer)
 ,outBufferDrawer(p.crispyEngine.outBuffer.buffer)
-,saturationWindow(p.parameters)
-,debugWindow()
+,saturationWindow(parameters)
+,moreControlWindow(parameters)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -35,6 +35,7 @@ CrispySaturatorAudioProcessorEditor::CrispySaturatorAudioProcessorEditor (Crispy
     addAndMakeVisible(outBufferDrawer);
     addAndMakeVisible(saturationWindow);
     addAndMakeVisible(debugWindow);
+    addAndMakeVisible(moreControlWindow);
     
     inGainSlider.setSliderStyle(Slider::LinearVertical);
     inGainSlider.setPopupDisplayEnabled(true, true, this);
@@ -45,8 +46,8 @@ CrispySaturatorAudioProcessorEditor::CrispySaturatorAudioProcessorEditor (Crispy
     outGainSlider.setPopupMenuEnabled(true);
     outGainSlider.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0, 0);
     
-    inGainSliderAttachment.reset(new SliderAttachment(p.parameters, Constants::IN_GAIN, inGainSlider));
-    outGainSliderAttachment.reset(new SliderAttachment(p.parameters, Constants::OUT_GAIN, outGainSlider));
+    inGainSliderAttachment.reset(new SliderAttachment(p.parameters, Constants::ID_IN_GAIN, inGainSlider));
+    outGainSliderAttachment.reset(new SliderAttachment(p.parameters, Constants::ID_OUT_GAIN, outGainSlider));
 }
 
 CrispySaturatorAudioProcessorEditor::~CrispySaturatorAudioProcessorEditor()
@@ -67,8 +68,10 @@ void CrispySaturatorAudioProcessorEditor::resized()
     Rectangle<int> bounds = getLocalBounds();
     
     if (processor.debug){
-        debugWindow.setBounds(bounds.removeFromRight(getWidth() * 0.3));
+        debugWindow.setBounds(bounds.removeFromLeft(getWidth() * 0.2));
     }
+    
+    moreControlWindow.setBounds(bounds.removeFromRight(getWidth() * 0.2));
     
     Rectangle<int> upperBounds = bounds.removeFromTop(bufferHeight);
     Rectangle<int> lowerBounds = bounds.removeFromBottom(bufferHeight);

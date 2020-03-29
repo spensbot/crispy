@@ -18,6 +18,7 @@
 #include "SaturationVisualizer2.h"
 #include "SaturationWindow.h"
 #include "DebugWindow.h"
+#include "MoreControlWindow.h"
 
 //==============================================================================
 /**
@@ -49,6 +50,7 @@ private:
     BufferDrawer inBufferDrawer;
     BufferDrawer outBufferDrawer;
     SaturationWindow saturationWindow;
+    MoreControlWindow moreControlWindow;
     
     DebugWindow debugWindow;
     

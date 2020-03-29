@@ -17,11 +17,11 @@ class CrispySaturator
 {
 public:
     static float oddSaturate(float sample, float power);
-    static float evenSaturate(float sample, float power, float mix);
+    static float evenSaturate(float sample, float mix, bool smooth);
     
-    static float saturateSample(float sample, float oddPower, float evenPower, float evenMix);
+    static float saturateSample(float sample, float oddPower, float evenMix, bool evenSmooth);
     
-    static void saturate(AudioSampleBuffer& buffer, int startSample, int numSamples, float oddPower, int evenPower, float evenMix);
+    static void saturate(AudioSampleBuffer& buffer, int startSample, int numSamples, float oddPower, float evenMix, bool evenSmooth);
     
 private:
     

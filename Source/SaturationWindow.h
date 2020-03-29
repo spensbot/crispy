@@ -20,13 +20,11 @@
 class SaturationWindow    : public Component, private Slider::Listener
 {
 public:
-    SaturationWindow(AudioProcessorValueTreeState& params)
-    : parameters(params)
+    SaturationWindow(AudioProcessorValueTreeState& params) : parameters(params)
     {
         addAndMakeVisible(saturationVisualizer);
-        initSlider(oddPowerSlider, oddPowerSliderAttachment, Constants::ODD_POWER);
-        initSlider(evenPowerSlider, evenPowerSliderAttachment, Constants::EVEN_POWER);
-        initSlider(evenMixSlider, evenMixSliderAttachment, Constants::EVEN_MIX);
+        initSlider(oddSlider, oddSliderAttachment, Constants::ID_ODD);
+        initSlider(evenSlider, evenSliderAttachment, Constants::ID_EVEN);
     }
 
     ~SaturationWindow()
@@ -41,27 +39,28 @@ public:
 
     void resized() override
     {
+        const int padding = getWidth()*0.03;
         Rectangle<int> bounds = getLocalBounds();
         saturationVisualizer.setBounds(bounds);
-        oddPowerSlider.setBounds(bounds.removeFromLeft(getWidth()/2));
-        evenPowerSlider.setBounds(bounds.removeFromTop(getHeight()/2));
-        evenMixSlider.setBounds(bounds);
+        oddSlider.setBounds(bounds.removeFromLeft(getWidth()/2).reduced(padding));
+        evenSlider.setBounds(bounds.reduced(padding));
     }
     
     void sliderValueChanged (Slider *slider) override
     {
-        
-        saturationVisualizer.reset(oddPowerSlider.getValue(), evenPowerSlider.getValue(), evenMixSlider.getValue());
+        DebugWindow::debugLines[2] = String(oddSlider.getValue());
+        DebugWindow::debugLines[3] = String(evenSlider.getValue());
+        saturationVisualizer.reset(oddSlider.getValue(), evenSlider.getValue(), true);
         repaint();
     }
 
 private:
     AudioProcessorValueTreeState& parameters;
     SaturationVisualizer2 saturationVisualizer;
-    Slider oddPowerSlider, evenPowerSlider, evenMixSlider;
+    Slider oddSlider, evenSlider;
     
     typedef AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
-    std::unique_ptr<SliderAttachment> oddPowerSliderAttachment, evenPowerSliderAttachment, evenMixSliderAttachment;
+    std::unique_ptr<SliderAttachment> oddSliderAttachment, evenSliderAttachment;
     
     void initSlider(Slider& slider, std::unique_ptr<SliderAttachment>& attachment, String paramId){
         addAndMakeVisible(slider);

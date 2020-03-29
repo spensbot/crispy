@@ -14,9 +14,15 @@
 
 class Constants {
 public:
-    inline static const String IN_GAIN = "inGain";
-    inline static const String ODD_POWER = "oddPower";
-    inline static const String EVEN_POWER = "evenPower";
-    inline static const String EVEN_MIX = "evenMix";
-    inline static const String OUT_GAIN = "outGain";
+    inline static const String ID_IN_GAIN = "inGain";
+    inline static const String ID_LOW_PASS_FREQ = "lowPassFreq";
+    inline static const String ID_HI_PASS_FREQ = "hiPassFreq";
+    inline static const String ID_NORMALIZE_ATTACK = "normalizeAttack";
+    inline static const String ID_NORMALIZE_RELEASE = "normalizeRelease";
+    inline static const String ID_NORMALIZE_AMOUNT = "normalizeAmount";
+    inline static const String ID_ODD = "odd";
+    inline static const String ID_EVEN = "even";
+    inline static const String ID_EVEN_SMOOTH = "evenSmooth";
+    inline static const String ID_WET_DRY = "wetDry";
+    inline static const String ID_OUT_GAIN = "outGain";
 };
