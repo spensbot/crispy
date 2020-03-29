@@ -12,10 +12,10 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-class CsLookAndFeel : public LookAndFeel_V4
+class LooknFeel : public LookAndFeel_V4
 {
 public:
-    CsLookAndFeel()
+    LooknFeel()
     {
         
     }

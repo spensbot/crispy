@@ -28,8 +28,11 @@ public:
         
     }
     
-    void reset (float _saturation) {
-        saturation = _saturation;
+    void reset (float _oddPower, float _evenPower, float _evenMix)
+    {
+        oddPower = _oddPower;
+        evenPower = _evenPower;
+        evenMix = _evenMix;
         updateBuffer();
     }
 
@@ -40,7 +43,6 @@ public:
         float pos = 0.0f;
         float y0 = (float)height / 2;
         float yMax = y0;
-        
         
         g.setColour (Colour::fromHSV(0.0f,0.0f,1.0f,1.0f));
         auto* bufferPointer = buffer.getReadPointer(0);
@@ -60,24 +62,30 @@ public:
         buffer.setSize(1, getWidth());
         updateBuffer();
     }
+
+private:
+    AudioSampleBuffer buffer;
+    
+    const float startAngle = -MathConstants<float>::pi;
+    const float length = MathConstants<float>::twoPi;
+    
+    float oddPower = 1.0f;
+    float evenPower = 2.0f;
+    float evenMix = 0.0f;
     
     void updateBuffer(){
         int numSamples = buffer.getNumSamples();
-        float radsPerSample = MathConstants<double>::twoPi / (float) numSamples;
-        float pos = 0.0f;
+        float radsPerSample = length / (float) numSamples;
+        float pos = startAngle;
         
         for (int sample=0 ; sample < numSamples ; sample++){
             float value = std::sin(pos);
-            float saturatedValue = CrispySaturator::saturateSample(value, saturation);
+            float saturatedValue = CrispySaturator::saturateSample(value, oddPower, evenPower, evenMix);
             buffer.setSample(0, sample, saturatedValue);
             
             pos += radsPerSample;
         }
     }
-
-private:
-    AudioSampleBuffer buffer;
-    float saturation = 1.0f;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SaturationVisualizer2)
 };

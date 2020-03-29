@@ -14,13 +14,15 @@
 #include "PluginProcessor.h"
 #include "BufferDrawer.h"
 #include "SaturationVisualizer.h"
-#include "CsLookAndFeel.h"
+#include "LooknFeel.h"
 #include "SaturationVisualizer2.h"
+#include "SaturationWindow.h"
+#include "DebugWindow.h"
 
 //==============================================================================
 /**
 */
-class CrispySaturatorAudioProcessorEditor  : public AudioProcessorEditor, private Slider::Listener
+class CrispySaturatorAudioProcessorEditor  : public AudioProcessorEditor
 {
 public:
     typedef AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
@@ -31,26 +33,24 @@ public:
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
-    
-    void sliderValueChanged (Slider *slider) override;
 
 private:
-    CsLookAndFeel csLookAndFeel;
+    LooknFeel looknFeel;
     
     CrispySaturatorAudioProcessor& processor;
+    AudioProcessorValueTreeState& parameters;
     
     Slider inGainSlider;
     Slider outGainSlider;
-    Slider saturationSlider;
     
     std::unique_ptr<SliderAttachment> inGainSliderAttachment;
     std::unique_ptr<SliderAttachment> outGainSliderAttachment;
-    std::unique_ptr<SliderAttachment> saturationSliderAttachment;
-    
-    SaturationVisualizer saturationVisualizer;
     
     BufferDrawer inBufferDrawer;
     BufferDrawer outBufferDrawer;
+    SaturationWindow saturationWindow;
+    
+    DebugWindow debugWindow;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CrispySaturatorAudioProcessorEditor)
 };

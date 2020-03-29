@@ -10,6 +10,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "Constants.h"
 
 //==============================================================================
 CrispySaturatorAudioProcessor::CrispySaturatorAudioProcessor()
@@ -25,10 +26,14 @@ CrispySaturatorAudioProcessor::CrispySaturatorAudioProcessor()
 #endif
 parameters (*this, &undoManager, Identifier ("APVTSTutorial"),
 {
-    std::make_unique<AudioParameterFloat> ("inGain", "In Gain", -18.0f, 18.0f, 0.0f),
-    std::make_unique<AudioParameterFloat> ("outGain", "Out Gain", -18.0f, 18.0f, 0.0f),
-    std::make_unique<AudioParameterFloat> ("saturation", "Saturation", NormalisableRange<float>(0.01f, 100.0f, 0.01f,
-                                                                                                std::log (0.5f) / std::log ((1.0 - 0.01) / (100.0 - 0.01))), 1.0f),
+    std::make_unique<AudioParameterFloat> (Constants::IN_GAIN, "In Gain", 0.0f, 24.0f, 0.0f),
+    
+    std::make_unique<AudioParameterFloat> (Constants::ODD_POWER, "Odd Power", NormalisableRange<float>(1.0f, 100.0f, 0.1f,
+                                                                                                std::log (0.5f) / std::log ((10.0 - 1.0) / (100.0 - 10.0))), 10.0f),
+    std::make_unique<AudioParameterFloat> (Constants::EVEN_POWER, "Even Power", 1.0f, 8.0f, 2.0f),
+    std::make_unique<AudioParameterFloat> (Constants::EVEN_MIX, "Even Mix", 0.0f, 1.0f, 0.0f),
+    
+    std::make_unique<AudioParameterFloat> (Constants::OUT_GAIN, "Out Gain", -24.0f, 0.0f, 0.0f),
 })
 , crispyEngine(parameters)
 {
@@ -170,15 +175,18 @@ AudioProcessorEditor* CrispySaturatorAudioProcessor::createEditor()
 //==============================================================================
 void CrispySaturatorAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
+    auto state = parameters.copyState();
+    std::unique_ptr<XmlElement> xml (state.createXml());
+    copyXmlToBinary (*xml, destData);
 }
 
 void CrispySaturatorAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
+    std::unique_ptr<XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
+ 
+    if (xmlState.get() != nullptr)
+        if (xmlState->hasTagName (parameters.state.getType()))
+            parameters.replaceState (ValueTree::fromXml (*xmlState));
 }
 
 //==============================================================================

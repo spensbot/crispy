@@ -58,6 +58,7 @@ public:
     
     AudioProcessorValueTreeState parameters;
     UndoManager undoManager;
+    bool debug = true;
     
     CrispyEngine crispyEngine;
 

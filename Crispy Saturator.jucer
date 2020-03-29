@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="sXUzY4" name="Crispy Saturator" projectType="audioplug" jucerVersion="5.4.5"
+<JUCERPROJECT id="sXUzY4" name="Crispy Saturator" projectType="audioplug" jucerVersion="5.4.7"
               companyName="Sailing To Mars" companyWebsite="sailingtomars.com"
-              companyEmail="spenser0saling@gmail.com">
+              companyEmail="spenser0saling@gmail.com" cppLanguageStandard="17">
   <MAINGROUP id="pF94Py" name="Crispy Saturator">
     <GROUP id="{8E810A11-F1E0-1024-5AC9-4493862E5DA9}" name="DSP">
       <FILE id="QlVauP" name="CrispyEngine.cpp" compile="1" resource="0"
@@ -26,6 +26,7 @@
       <FILE id="e5oZj6" name="BufferDrawer.cpp" compile="1" resource="0"
             file="Source/BufferDrawer.cpp"/>
       <FILE id="WydhaB" name="BufferDrawer.h" compile="0" resource="0" file="Source/BufferDrawer.h"/>
+      <FILE id="Ytbfg4" name="DebugWindow.h" compile="0" resource="0" file="Source/DebugWindow.h"/>
       <FILE id="SOe2By" name="DecibelSlider.cpp" compile="1" resource="0"
             file="Source/DecibelSlider.cpp"/>
       <FILE id="IC6Vze" name="DecibelSlider.h" compile="0" resource="0" file="Source/DecibelSlider.h"/>
@@ -33,9 +34,13 @@
             file="Source/SaturationVisualizer.h"/>
       <FILE id="wCHtdZ" name="SaturationVisualizer2.h" compile="0" resource="0"
             file="Source/SaturationVisualizer2.h"/>
+      <FILE id="IjUBWu" name="SaturationWindow.h" compile="0" resource="0"
+            file="Source/SaturationWindow.h"/>
     </GROUP>
     <GROUP id="{DE5FA1BF-C7AE-FA4C-AC07-1613705D8EB5}" name="Source">
-      <FILE id="ABbNmY" name="CsLookAndFeel.h" compile="0" resource="0" file="Source/CsLookAndFeel.h"/>
+      <FILE id="ssxfPO" name="State.h" compile="0" resource="0" file="Source/State.h"/>
+      <FILE id="CQZh5o" name="Constants.h" compile="0" resource="0" file="Source/Constants.h"/>
+      <FILE id="ABbNmY" name="LooknFeel.h" compile="0" resource="0" file="Source/LooknFeel.h"/>
       <FILE id="Ga3wGH" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="gR8fCK" name="PluginProcessor.h" compile="0" resource="0"

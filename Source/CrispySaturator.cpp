@@ -9,44 +9,46 @@
 */
 
 #include "CrispySaturator.h"
+#include "DebugWindow.h"
 
-//Takes any value and clips it from -1 to 1. Values between this range are pushed outwards or pulled into the origin depending on squishFactor
-float CrispySaturator::saturateSample(float sample, float squishFactor)
+float CrispySaturator::oddSaturate(float sample, float power)
 {
-    
-    if (sample > 1.0f) return 1.0f;
-    if (sample < -1.0f) return -1.0f;
-    
     if (sample > 0) {
-        return 1.0f - powf(1.0f-sample, squishFactor);
+        return 1.0f - powf(1.0f-sample, power);
     } else {
-        return -(1.0f - powf(1.0f+sample, squishFactor));
+        return -(1.0f - powf(1.0f+sample, power));
     }
 }
 
-//Requires input between 0 and 2pi for efficiency.
-//Applies the saturation above, using pi as the midpoint instead of 0.
-float CrispySaturator::saturateAngle(float angle, float squishFactor)
+float CrispySaturator::evenSaturate(float sample, float power, float mix)
 {
-    //first, scale the input to be between 0 and 2
-    float x = angle/MathConstants<float>::pi;
-    //then, shift values to be between -1 and 1;
-    x -= 1;
-    //saturate x
-    float saturatedX = saturateSample(x, squishFactor);
-    //convert the saturated value back to an angle
-    float saturatedAngle = (saturatedX + 1) * MathConstants<float>::pi;
-    return saturatedAngle;
+    float wet = powf(sample, (int)power);
+    wet = fabs(wet);
+    wet -= 0.5f;
+    wet *= 2.0f;
+    return wet * mix + sample * (1.0f - mix);
 }
 
-void CrispySaturator::saturate(AudioSampleBuffer& buffer, int startSample, int numSamples, float squishFactor)
+float CrispySaturator::saturateSample(float sample, float oddPower, float evenPower, float evenMix)
+{
+    if (sample > 1.0f) return 1.0f;
+    if (sample < -1.0f) return -1.0f;
+    
+    sample = oddSaturate(sample, oddPower);
+    
+    sample = evenSaturate(sample, evenPower, evenMix);
+    
+    return sample;
+}
+
+void CrispySaturator::saturate(AudioSampleBuffer& buffer, int startSample, int numSamples, float oddPower, int evenPower, float evenMix)
 {
     for (int sample = startSample ; sample<startSample+numSamples ; sample++)
     {
         for (int channel = 0 ; channel<buffer.getNumChannels() ; channel++)
         {
             float currentSample = buffer.getSample(channel, sample);
-            float saturatedSample = saturateSample(currentSample, squishFactor);
+            float saturatedSample = saturateSample(currentSample, oddPower, evenPower, evenMix);
             buffer.setSample(channel, sample, saturatedSample);
         }
     }

@@ -10,12 +10,16 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "Constants.h"
 
 //==============================================================================
 CrispySaturatorAudioProcessorEditor::CrispySaturatorAudioProcessorEditor (CrispySaturatorAudioProcessor& p)
     : AudioProcessorEditor (&p), processor (p)
+,parameters(p.parameters)
 ,inBufferDrawer(p.crispyEngine.inBuffer.buffer)
 ,outBufferDrawer(p.crispyEngine.outBuffer.buffer)
+,saturationWindow(p.parameters)
+,debugWindow()
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -23,14 +27,14 @@ CrispySaturatorAudioProcessorEditor::CrispySaturatorAudioProcessorEditor (Crispy
     setResizeLimits(300, 300, 1920, 1080);
     setSize (600, 400);
     
-    setLookAndFeel(&csLookAndFeel);
+    setLookAndFeel(&looknFeel);
     
     addAndMakeVisible(inGainSlider);
     addAndMakeVisible(outGainSlider);
     addAndMakeVisible(inBufferDrawer);
     addAndMakeVisible(outBufferDrawer);
-    addAndMakeVisible(saturationVisualizer);
-    addAndMakeVisible(saturationSlider);
+    addAndMakeVisible(saturationWindow);
+    addAndMakeVisible(debugWindow);
     
     inGainSlider.setSliderStyle(Slider::LinearVertical);
     inGainSlider.setPopupDisplayEnabled(true, true, this);
@@ -40,13 +44,9 @@ CrispySaturatorAudioProcessorEditor::CrispySaturatorAudioProcessorEditor (Crispy
     outGainSlider.setPopupDisplayEnabled(true, true, this);
     outGainSlider.setPopupMenuEnabled(true);
     outGainSlider.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0, 0);
-    saturationSlider.setSliderStyle(Slider::RotaryVerticalDrag);
-    saturationSlider.setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
-    saturationSlider.addListener(this);
     
-    inGainSliderAttachment.reset(new SliderAttachment(p.parameters, "inGain", inGainSlider));
-    outGainSliderAttachment.reset(new SliderAttachment(p.parameters, "outGain", outGainSlider));
-    saturationSliderAttachment.reset(new SliderAttachment(p.parameters, "saturation", saturationSlider));
+    inGainSliderAttachment.reset(new SliderAttachment(p.parameters, Constants::IN_GAIN, inGainSlider));
+    outGainSliderAttachment.reset(new SliderAttachment(p.parameters, Constants::OUT_GAIN, outGainSlider));
 }
 
 CrispySaturatorAudioProcessorEditor::~CrispySaturatorAudioProcessorEditor()
@@ -61,11 +61,14 @@ void CrispySaturatorAudioProcessorEditor::paint (Graphics& g)
 
 void CrispySaturatorAudioProcessorEditor::resized()
 {
-    int padding = 30;
     int sliderWidth = 30;
     int bufferHeight = getHeight()/4;
     
     Rectangle<int> bounds = getLocalBounds();
+    
+    if (processor.debug){
+        debugWindow.setBounds(bounds.removeFromRight(getWidth() * 0.3));
+    }
     
     Rectangle<int> upperBounds = bounds.removeFromTop(bufferHeight);
     Rectangle<int> lowerBounds = bounds.removeFromBottom(bufferHeight);
@@ -77,16 +80,7 @@ void CrispySaturatorAudioProcessorEditor::resized()
 //    inGainSlider.setBounds(bounds.removeFromLeft(sliderWidth));
 //    outGainSlider.setBounds(bounds.removeFromRight(sliderWidth));
     
-    saturationVisualizer.setBounds(bounds);
-    
     //bounds.reduce(padding, padding);
     
-    saturationSlider.setBounds(bounds);
-}
-
-void CrispySaturatorAudioProcessorEditor::sliderValueChanged (Slider *slider)
-{
-    if (slider == &saturationSlider) {
-        saturationVisualizer.reset(slider->getValue());
-    }
+    saturationWindow.setBounds(bounds);
 }

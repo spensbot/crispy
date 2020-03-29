@@ -64,7 +64,7 @@ public:
         int numSamples = buffer.getNumSamples();
         for (int sample=0 ; sample < numSamples ; sample++){
             float value = (float)sample / (float)numSamples;
-            float saturatedValue = CrispySaturator::saturateSample(value, saturation);
+            float saturatedValue = CrispySaturator::saturateSample(value, saturation, 2, 0.0f);
             buffer.setSample(0, sample, saturatedValue);
         }
     }
