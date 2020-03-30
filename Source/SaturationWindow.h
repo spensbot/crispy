@@ -43,7 +43,7 @@ public:
         Rectangle<int> bounds = getLocalBounds();
         saturationVisualizer.setBounds(bounds);
         oddSlider.setBounds(bounds.removeFromLeft(getWidth()/2).reduced(padding));
-        evenSlider.setBounds(bounds.reduced(padding));
+        evenSlider.setBounds(bounds.reduced(padding * 3));
     }
     
     void sliderValueChanged (Slider *slider) override

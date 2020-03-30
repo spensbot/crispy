@@ -29,6 +29,15 @@ public:
 private:
     AudioProcessorValueTreeState& parameters;
     
-    RamperLinear inGainRamper, outGainRamper, oddRamper, evenRamper;
+    RamperLinear inGainRamper
+        , lowPassFreqRamper
+        , hiPassFreqRamper
+        , normalizeAttackRamper
+        , normalizeReleaseRamper
+        , normalizeAmountRamper
+        , oddRamper
+        , evenRamper
+        , wetDryRamper
+        , outGainRamper;
     
 };
