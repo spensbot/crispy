@@ -12,12 +12,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
-#include "BufferDrawer.h"
 #include "SaturationVisualizer.h"
-#include "LooknFeel.h"
-#include "SaturationVisualizer2.h"
 #include "SaturationWindow.h"
-#include "DebugWindow.h"
 #include "MoreControlWindow.h"
 
 //==============================================================================
@@ -36,7 +32,7 @@ public:
     void resized() override;
 
 private:
-    LooknFeel looknFeel;
+    stm::StmLookAndFeel lookAndFeel;
     
     CrispySaturatorAudioProcessor& processor;
     AudioProcessorValueTreeState& parameters;
@@ -47,12 +43,10 @@ private:
     std::unique_ptr<SliderAttachment> inGainSliderAttachment;
     std::unique_ptr<SliderAttachment> outGainSliderAttachment;
     
-    BufferDrawer inBufferDrawer;
-    BufferDrawer outBufferDrawer;
     SaturationWindow saturationWindow;
     MoreControlWindow moreControlWindow;
     
-    DebugWindow debugWindow;
+    stm::DebugDisplay debugDisplay;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CrispySaturatorAudioProcessorEditor)
 };

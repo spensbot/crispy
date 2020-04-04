@@ -16,8 +16,6 @@
 CrispySaturatorAudioProcessorEditor::CrispySaturatorAudioProcessorEditor (CrispySaturatorAudioProcessor& p)
     : AudioProcessorEditor (&p), processor (p)
 ,parameters(p.parameters)
-,inBufferDrawer(p.crispyEngine.inBuffer.buffer)
-,outBufferDrawer(p.crispyEngine.outBuffer.buffer)
 ,saturationWindow(parameters)
 ,moreControlWindow(parameters)
 {
@@ -27,14 +25,12 @@ CrispySaturatorAudioProcessorEditor::CrispySaturatorAudioProcessorEditor (Crispy
     setResizeLimits(300, 300, 1920, 1080);
     setSize (600, 400);
     
-    setLookAndFeel(&looknFeel);
+    setLookAndFeel(&lookAndFeel);
     
     addAndMakeVisible(inGainSlider);
     addAndMakeVisible(outGainSlider);
-    addAndMakeVisible(inBufferDrawer);
-    addAndMakeVisible(outBufferDrawer);
     addAndMakeVisible(saturationWindow);
-    addAndMakeVisible(debugWindow);
+    addAndMakeVisible(debugDisplay);
     addAndMakeVisible(moreControlWindow);
     
     inGainSlider.setSliderStyle(Slider::LinearVertical);
@@ -68,7 +64,7 @@ void CrispySaturatorAudioProcessorEditor::resized()
     Rectangle<int> bounds = getLocalBounds();
     
     if (processor.debug){
-        debugWindow.setBounds(bounds.removeFromLeft(getWidth() * 0.2));
+        debugDisplay.setBounds(bounds.removeFromLeft(getWidth() * 0.2));
     }
     
     moreControlWindow.setBounds(bounds.removeFromRight(getWidth() * 0.2));
@@ -77,8 +73,6 @@ void CrispySaturatorAudioProcessorEditor::resized()
     Rectangle<int> lowerBounds = bounds.removeFromBottom(bufferHeight);
     inGainSlider.setBounds(upperBounds.removeFromLeft(sliderWidth));
     outGainSlider.setBounds(lowerBounds.removeFromLeft(sliderWidth));
-    inBufferDrawer.setBounds(upperBounds);
-    outBufferDrawer.setBounds(lowerBounds);
     
 //    inGainSlider.setBounds(bounds.removeFromLeft(sliderWidth));
 //    outGainSlider.setBounds(bounds.removeFromRight(sliderWidth));

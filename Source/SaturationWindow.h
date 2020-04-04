@@ -12,7 +12,6 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Constants.h"
-#include "DebugWindow.h"
 
 //==============================================================================
 /*
@@ -48,15 +47,13 @@ public:
     
     void sliderValueChanged (Slider *slider) override
     {
-        DebugWindow::debugLines[2] = String(oddSlider.getValue());
-        DebugWindow::debugLines[3] = String(evenSlider.getValue());
         saturationVisualizer.reset(oddSlider.getValue(), evenSlider.getValue(), true);
         repaint();
     }
 
 private:
     AudioProcessorValueTreeState& parameters;
-    SaturationVisualizer2 saturationVisualizer;
+    SaturationVisualizer saturationVisualizer;
     Slider oddSlider, evenSlider;
     
     typedef AudioProcessorValueTreeState::SliderAttachment SliderAttachment;

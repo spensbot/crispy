@@ -12,7 +12,6 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Constants.h"
-#include "DebugWindow.h"
 
 //==============================================================================
 /*
@@ -53,7 +52,9 @@ public:
         Rectangle<int> bounds = getLocalBounds();
         
         lowPassFreqSlider.setBounds(bounds.removeFromTop(linearHeight));
+        lowPassFreqSlider.setPopupDisplayEnabled(true, true, this);
         hiPassFreqSlider.setBounds(bounds.removeFromTop(linearHeight));
+        hiPassFreqSlider.setPopupDisplayEnabled(true, true, this);
         
         normalizeAttackSlider.setBounds(bounds.removeFromTop(rotaryHeight));
         normalizeReleaseSlider.setBounds(bounds.removeFromTop(rotaryHeight));
