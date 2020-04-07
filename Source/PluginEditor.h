@@ -13,7 +13,9 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
 #include "SaturationVisualizer.h"
-#include "SaturationWindow.h"
+#include "InputWindow.h"
+#include "HarmonicsWindow.h"
+#include "OutputWindow.h"
 #include "MoreControlWindow.h"
 
 //==============================================================================
@@ -37,13 +39,9 @@ private:
     CrispySaturatorAudioProcessor& processor;
     AudioProcessorValueTreeState& parameters;
     
-    Slider inGainSlider;
-    Slider outGainSlider;
-    
-    std::unique_ptr<SliderAttachment> inGainSliderAttachment;
-    std::unique_ptr<SliderAttachment> outGainSliderAttachment;
-    
-    SaturationWindow saturationWindow;
+    InputWindow inputWindow;
+    HarmonicsWindow harmonicsWindow;
+    OutputWindow outputWindow;
     MoreControlWindow moreControlWindow;
     
     stm::DebugDisplay debugDisplay;

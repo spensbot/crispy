@@ -13,19 +13,20 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 class Constants {
+    
 public:
     
     inline static const String
         ID_IN_GAIN = "inGain",
         ID_LOW_PASS_FREQ = "lowPassFreq",
         ID_HI_PASS_FREQ = "hiPassFreq",
-        ID_NORMALIZE_ATTACK = "normalizeAttack",
-        ID_NORMALIZE_RELEASE = "normalizeRelease",
-        ID_NORMALIZE_AMOUNT = "normalizeAmount",
+        ID_AUTO_GAIN_AMOUNT = "autoGainAmount",
+        ID_OVERSAMPLING = "oversampling",
         ID_ODD = "odd",
         ID_EVEN = "even",
-        ID_EVEN_SMOOTH = "evenSmooth",
-        ID_WET_DRY = "wetDry",
-        ID_OUT_GAIN = "outGain";
+        ID_DRY_GAIN = "dryGain",
+        ID_WET_GAIN = "wetGain",
+        ID_BYPASS = "bypass"
+        ;
     
 };

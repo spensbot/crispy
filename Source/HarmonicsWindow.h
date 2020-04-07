@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    SaturationWindow.h
-    Created: 28 Mar 2020 7:59:54am
+    HarmonicsWindow.h
+    Created: 6 Apr 2020 12:09:32am
     Author:  Spenser Saling
 
   ==============================================================================
@@ -16,17 +16,17 @@
 //==============================================================================
 /*
 */
-class SaturationWindow    : public Component, private Slider::Listener
+class HarmonicsWindow    : public Component, private Slider::Listener
 {
 public:
-    SaturationWindow(AudioProcessorValueTreeState& params) : parameters(params)
+    HarmonicsWindow(AudioProcessorValueTreeState& params) : parameters(params)
     {
         addAndMakeVisible(saturationVisualizer);
         initSlider(oddSlider, oddSliderAttachment, Constants::ID_ODD);
         initSlider(evenSlider, evenSliderAttachment, Constants::ID_EVEN);
     }
 
-    ~SaturationWindow()
+    ~HarmonicsWindow()
     {
         
     }
@@ -40,14 +40,14 @@ public:
     {
         const int padding = getWidth()*0.03;
         Rectangle<int> bounds = getLocalBounds();
-        saturationVisualizer.setBounds(bounds);
+        saturationVisualizer.setBounds(bounds.removeFromTop(getHeight()/2));
         oddSlider.setBounds(bounds.removeFromLeft(getWidth()/2).reduced(padding));
         evenSlider.setBounds(bounds.reduced(padding * 3));
     }
     
     void sliderValueChanged (Slider *slider) override
     {
-        saturationVisualizer.reset(oddSlider.getValue(), evenSlider.getValue(), true);
+        saturationVisualizer.reset(oddSlider.getValue(), evenSlider.getValue());
         repaint();
     }
 
@@ -67,5 +67,5 @@ private:
         attachment.reset(new SliderAttachment(parameters, paramId, slider));
     }
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SaturationWindow)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (HarmonicsWindow)
 };

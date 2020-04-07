@@ -16,34 +16,25 @@
 CrispySaturatorAudioProcessorEditor::CrispySaturatorAudioProcessorEditor (CrispySaturatorAudioProcessor& p)
     : AudioProcessorEditor (&p), processor (p)
 ,parameters(p.parameters)
-,saturationWindow(parameters)
+,inputWindow(parameters)
+,harmonicsWindow(parameters)
+,outputWindow(parameters)
 ,moreControlWindow(parameters)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setResizable(true, true);
     setResizeLimits(300, 300, 1920, 1080);
-    setSize (600, 400);
+    setSize (600, 700);
     
     setLookAndFeel(&lookAndFeel);
     
-    addAndMakeVisible(inGainSlider);
-    addAndMakeVisible(outGainSlider);
-    addAndMakeVisible(saturationWindow);
-    addAndMakeVisible(debugDisplay);
+    addAndMakeVisible(inputWindow);
+    addAndMakeVisible(harmonicsWindow);
+    addAndMakeVisible(outputWindow);
     addAndMakeVisible(moreControlWindow);
     
-    inGainSlider.setSliderStyle(Slider::LinearVertical);
-    inGainSlider.setPopupDisplayEnabled(true, true, this);
-    inGainSlider.setPopupMenuEnabled(true);
-    inGainSlider.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0, 0);
-    outGainSlider.setSliderStyle(Slider::LinearVertical);
-    outGainSlider.setPopupDisplayEnabled(true, true, this);
-    outGainSlider.setPopupMenuEnabled(true);
-    outGainSlider.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0, 0);
-    
-    inGainSliderAttachment.reset(new SliderAttachment(p.parameters, Constants::ID_IN_GAIN, inGainSlider));
-    outGainSliderAttachment.reset(new SliderAttachment(p.parameters, Constants::ID_OUT_GAIN, outGainSlider));
+    addAndMakeVisible(debugDisplay);
 }
 
 CrispySaturatorAudioProcessorEditor::~CrispySaturatorAudioProcessorEditor()
@@ -58,26 +49,17 @@ void CrispySaturatorAudioProcessorEditor::paint (Graphics& g)
 
 void CrispySaturatorAudioProcessorEditor::resized()
 {
-    int sliderWidth = 30;
-    int bufferHeight = getHeight()/4;
-    
     Rectangle<int> bounds = getLocalBounds();
     
+    int inputWindowHeight = getHeight() / 6;
+    int moreControlHeight = getHeight() / 4;
+    
     if (processor.debug){
-        debugDisplay.setBounds(bounds.removeFromLeft(getWidth() * 0.2));
+        debugDisplay.setBounds(bounds.removeFromLeft(getWidth() * 0.3));
     }
     
-    moreControlWindow.setBounds(bounds.removeFromRight(getWidth() * 0.2));
-    
-    Rectangle<int> upperBounds = bounds.removeFromTop(bufferHeight);
-    Rectangle<int> lowerBounds = bounds.removeFromBottom(bufferHeight);
-    inGainSlider.setBounds(upperBounds.removeFromLeft(sliderWidth));
-    outGainSlider.setBounds(lowerBounds.removeFromLeft(sliderWidth));
-    
-//    inGainSlider.setBounds(bounds.removeFromLeft(sliderWidth));
-//    outGainSlider.setBounds(bounds.removeFromRight(sliderWidth));
-    
-    //bounds.reduce(padding, padding);
-    
-    saturationWindow.setBounds(bounds);
+    inputWindow.setBounds(bounds.removeFromTop(inputWindowHeight));
+    moreControlWindow.setBounds(bounds.removeFromBottom(moreControlHeight));
+    outputWindow.setBounds(bounds.removeFromBottom(inputWindowHeight));
+    harmonicsWindow.setBounds(bounds);
 }

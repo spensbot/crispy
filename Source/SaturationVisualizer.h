@@ -28,11 +28,10 @@ public:
         
     }
     
-    void reset (float _odd, float _even, bool _evenSmooth)
+    void reset (float _odd, float _even)
     {
         odd = _odd;
         even = _even;
-        evenSmooth = _evenSmooth;
         updateBuffer();
     }
 
@@ -71,7 +70,6 @@ private:
     
     float odd = 1.0f;
     float even = 0.0f;
-    bool evenSmooth = true;
     
     stm::SaturatorCrispyOdd saturatorOdd;
     stm::SaturatorCrispyEven saturatorEven;
@@ -85,8 +83,6 @@ private:
             float value = std::sin(pos);
             float saturatedValue = saturatorEven.saturateSample(value, even);
             saturatedValue = saturatorOdd.saturateSample(saturatedValue, odd);
-//            float saturatedValue = saturatorOdd.saturateSample(value, odd);
-//            saturatedValue = saturatorEven.saturateSample(saturatedValue, even);
             buffer.setSample(0, sample, saturatedValue);
             
             pos += radsPerSample;

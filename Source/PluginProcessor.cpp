@@ -28,22 +28,44 @@ parameters (*this, &undoManager, Identifier ("APVTSTutorial"),
 {
     std::make_unique<AudioParameterFloat> (Constants::ID_IN_GAIN, "In Gain", 0.0f, 24.0f, 0.0f),
     
-    std::make_unique<AudioParameterFloat> (Constants::ID_LOW_PASS_FREQ, "Low Pass Frequency", 20.0f, 20000.0f, 20000.0f),
-    std::make_unique<AudioParameterFloat> (Constants::ID_HI_PASS_FREQ, "High Pass Frequency", 20.0f, 20000.0f, 20.0f),
+    std::make_unique<AudioParameterFloat> (Constants::ID_LOW_PASS_FREQ,
+                                           "Low Pass Frequency",
+                                           NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.3f),
+                                           20000.0f),
     
-    std::make_unique<AudioParameterFloat> (Constants::ID_NORMALIZE_ATTACK, "Normalize Attack", 0.0f, 500.0f, 0.0f),
-    std::make_unique<AudioParameterFloat> (Constants::ID_NORMALIZE_RELEASE, "Normalize Release", 0.0f, 500.0f, 50.0f),
-    std::make_unique<AudioParameterFloat> (Constants::ID_NORMALIZE_AMOUNT, "Normalize Amount", 0.0f, 1.0f, 0.0f),
+    std::make_unique<AudioParameterFloat> (Constants::ID_HI_PASS_FREQ,
+                                           "High Pass Frequency",
+                                           NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.3f),
+                                           20.0f),
     
-    std::make_unique<AudioParameterFloat> (Constants::ID_ODD, "Odd Harmonics",
-                                           NormalisableRange<float>(1.0f, 100.0f, 0.1f, std::log (0.5f) / std::log ((10.0 - 1.0) / (100.0 - 10.0)))
-                                           , 10.0f),
+    std::make_unique<AudioParameterFloat> (Constants::ID_AUTO_GAIN_AMOUNT, "Auto Gain Amount", 0.0f, 1.0f, 0.0f),
+    
+    std::make_unique<AudioParameterFloat> (Constants::ID_OVERSAMPLING,
+                                           "Oversampling",
+                                           NormalisableRange<float>(0.0f, 8.0f, 2.0f),
+                                           0.0f),
+    
+    std::make_unique<AudioParameterFloat> (Constants::ID_ODD,
+                                           "Odd Harmonics",
+                                           NormalisableRange<float>(1.0f, 100.0f, 0.01f, 0.3f),
+                                           1.0f),
+    
     std::make_unique<AudioParameterFloat> (Constants::ID_EVEN, "Even Harmonics", 0.0f, 1.0f, 0.0f),
-    std::make_unique<AudioParameterBool> (Constants::ID_EVEN_SMOOTH, "Smooth Even Shape", true),
     
-    std::make_unique<AudioParameterFloat> (Constants::ID_WET_DRY, "Wet/Dry Mix", 0.0f, 1.0f, 1.0f),
+    std::make_unique<AudioParameterFloat> (Constants::ID_WET_GAIN,
+                                           "Wet Gain",
+                                           NormalisableRange<float>(-100.0f, 6.0f, 0.01f, 3.0f),
+                                           0.0f),
     
-    std::make_unique<AudioParameterFloat> (Constants::ID_OUT_GAIN, "Out Gain", -24.0f, 0.0f, 0.0f),
+    std::make_unique<AudioParameterFloat> (Constants::ID_DRY_GAIN,
+                                           "Dry Gain",
+                                           NormalisableRange<float>(-100.0f, 6.0f, 0.01f, 3.0f),
+                                           0.0f),
+    
+    std::make_unique<AudioParameterBool> (Constants::ID_BYPASS, "Bypass", false)
+
+    // equation for calculating skew factor for center point
+    // std::log (0.5f) / std::log ((10.0 - 1.0) / (100.0 - 10.0))
 })
 , crispyEngine(parameters)
 {
@@ -122,6 +144,9 @@ void CrispySaturatorAudioProcessor::prepareToPlay (double sampleRate, int sample
     auto totalNumInputChannels  = getTotalNumInputChannels();
     
     crispyEngine.prepare({ sampleRate, (uint32) samplesPerBlock, (uint32) totalNumInputChannels });
+    
+    //Reports latency to the DAW
+    setLatencySamples(0);
 }
 
 void CrispySaturatorAudioProcessor::releaseResources()

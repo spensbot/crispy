@@ -21,16 +21,17 @@ class MoreControlWindow    : public Component
 public:
     MoreControlWindow(AudioProcessorValueTreeState& params) : parameters(params)
     {
-        initSlider(lowPassFreqSlider, lowPassFreqSliderAttachment, Constants::ID_LOW_PASS_FREQ);
-        lowPassFreqSlider.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
-        initSlider(hiPassFreqSlider, hiPassFreqSliderAttachment, Constants::ID_HI_PASS_FREQ);
-        hiPassFreqSlider.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
+        initSlider(autoGainAmountSlider, autoGainAmountSliderAttachment, Constants::ID_AUTO_GAIN_AMOUNT);
+        initSlider(oversamplingSlider, oversamplingSliderAttachment, Constants::ID_OVERSAMPLING);
+        initSlider(dryGainSlider, dryGainSliderAttachment, Constants::ID_DRY_GAIN);
+        dryGainSlider.setSliderStyle(Slider::LinearVertical);
+        initSlider(wetGainSlider, wetGainSliderAttachment, Constants::ID_WET_GAIN);
+        wetGainSlider.setSliderStyle(Slider::LinearVertical);
         
-        initSlider(normalizeAttackSlider, normalizeAttackSliderAttachment, Constants::ID_NORMALIZE_ATTACK);
-        initSlider(normalizeReleaseSlider, normalizeReleaseSliderAttachment, Constants::ID_NORMALIZE_RELEASE);
-        initSlider(normalizeAmountSlider, normalizeAmountSliderAttachment, Constants::ID_NORMALIZE_AMOUNT);
-        
-        initSlider(wetDrySlider, wetDrySliderAttachment, Constants::ID_WET_DRY);
+        addAndMakeVisible(matchedBypassButton);
+        matchedBypassButton.setButtonText("Matched Bypass");
+        matchedBypassButton.setClickingTogglesState(true);
+        matchedBypassButtonAttachment.reset(new ButtonAttachment(parameters, Constants::ID_BYPASS, matchedBypassButton));
     }
 
     ~MoreControlWindow()
@@ -41,60 +42,59 @@ public:
     void paint (Graphics& g) override
     {
         g.fillAll (Colours::darkgrey);
-        
     }
 
     void resized() override
     {
-        int linearHeight = getHeight() * 0.1;
-        int rotaryHeight = getHeight() * 0.15;
+        int padding = 5;
+        int rotaryWidth = getWidth() / 4;
+        int sliderWidth = 20;
+        int bypassWidth = 80;
+        int bypassHeight = 30;
         
         Rectangle<int> bounds = getLocalBounds();
+        bounds.reduce(padding, padding);
         
-        lowPassFreqSlider.setBounds(bounds.removeFromTop(linearHeight));
-        lowPassFreqSlider.setPopupDisplayEnabled(true, true, this);
-        hiPassFreqSlider.setBounds(bounds.removeFromTop(linearHeight));
-        hiPassFreqSlider.setPopupDisplayEnabled(true, true, this);
+        autoGainAmountSlider.setBounds(bounds.removeFromLeft(rotaryWidth));
+        oversamplingSlider.setBounds(bounds.removeFromRight(rotaryWidth));
         
-        normalizeAttackSlider.setBounds(bounds.removeFromTop(rotaryHeight));
-        normalizeReleaseSlider.setBounds(bounds.removeFromTop(rotaryHeight));
-        normalizeAmountSlider.setBounds(bounds.removeFromTop(rotaryHeight));
+        int excess = bounds.getWidth() - 2*sliderWidth - 2*padding - bypassWidth;
+        bounds.reduce(excess/2, 0);
         
-        wetDrySlider.setBounds(bounds.removeFromTop(rotaryHeight));
+        dryGainSlider.setBounds(bounds.removeFromLeft(sliderWidth));
+        wetGainSlider.setBounds(bounds.removeFromRight(sliderWidth));
+        bounds.reduce(padding, padding);
+        matchedBypassButton.setBounds(bounds.removeFromBottom(bypassHeight));
     }
 
 private:
     AudioProcessorValueTreeState& parameters;
     
-    Slider lowPassFreqSlider
-        , hiPassFreqSlider
-        , normalizeAttackSlider
-        , normalizeReleaseSlider
-        , normalizeAmountSlider
-        , wetDrySlider;
+    Slider autoGainAmountSlider,
+        oversamplingSlider,
+        dryGainSlider,
+        wetGainSlider;
+    
+    TextButton matchedBypassButton;
     
     typedef AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
+    typedef AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
     
-    std::unique_ptr<SliderAttachment> lowPassFreqSliderAttachment
-        , hiPassFreqSliderAttachment
-        , normalizeAttackSliderAttachment
-        , normalizeReleaseSliderAttachment
-        , normalizeAmountSliderAttachment
-        , wetDrySliderAttachment;
+    std::unique_ptr<SliderAttachment> autoGainAmountSliderAttachment,
+        oversamplingSliderAttachment,
+        dryGainSliderAttachment,
+        wetGainSliderAttachment;
+    
+    std::unique_ptr<ButtonAttachment> matchedBypassButtonAttachment;
     
     void initSlider(Slider& slider, std::unique_ptr<SliderAttachment>& attachment, String paramId){
         addAndMakeVisible(slider);
         slider.setSliderStyle(Slider::RotaryVerticalDrag);
         slider.setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
+        slider.setPopupDisplayEnabled(true, true, this);
+        slider.setPopupMenuEnabled(true);
         attachment.reset(new SliderAttachment(parameters, paramId, slider));
     }
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MoreControlWindow)
 };
-
-//inline static const String ID_LOW_PASS_FREQ = "lowPassFreq";
-//inline static const String ID_HI_PASS_FREQ = "hiPassFreq";
-//inline static const String ID_NORMALIZE_ATTACK = "normalizeAttack";
-//inline static const String ID_NORMALIZE_RELEASE = "normalizeRelease";
-//inline static const String ID_NORMALIZE_AMOUNT = "normalizeAmount";
-//inline static const String ID_WET_DRY = "wetDry";

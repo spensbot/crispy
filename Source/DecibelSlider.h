@@ -15,7 +15,17 @@
 class DecibelSlider : public Slider
 {
 public:
-    String getTextFromValue (double value) override;
-    double getValueFromText (const String& text) override;
-private:
+    
+    String getTextFromValue (double value) override
+    {
+        return Decibels::toString(value);
+    }
+    
+    double getValueFromText (const String& text) override
+    {
+        auto decibelText = text.upToFirstOccurrenceOf ("dB", false, false).trim();
+        auto minusInfinitydB = -100.0;
+        return decibelText.equalsIgnoreCase ("-INF") ? minusInfinitydB : decibelText.getDoubleValue();
+    }
+    
 };
