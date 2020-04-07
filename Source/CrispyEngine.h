@@ -13,91 +13,84 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Constants.h"
 #include "InputFilter.h"
+#include "SaturationProcessor.h"
 
 class CrispyEngine: public dsp::ProcessorBase, public AudioProcessorValueTreeState::Listener
 {
 public:
-    CrispyEngine(AudioProcessorValueTreeState& params) : parameters(params), inputFilter(params)
+    
+    CrispyEngine(AudioProcessorValueTreeState& params)
+    : parameters(params)
+    , inputFilter(params)
+    , saturation(params)
     {
         parameters.addParameterListener(Constants::ID_IN_GAIN, this);
-        parameters.addParameterListener(Constants::ID_LOW_PASS_FREQ, this);
-        parameters.addParameterListener(Constants::ID_HI_PASS_FREQ, this);
-        parameters.addParameterListener(Constants::ID_NORMALIZE_ATTACK, this);
-        parameters.addParameterListener(Constants::ID_NORMALIZE_RELEASE, this);
-        parameters.addParameterListener(Constants::ID_NORMALIZE_AMOUNT, this);
-        parameters.addParameterListener(Constants::ID_ODD, this);
-        parameters.addParameterListener(Constants::ID_EVEN, this);
-        parameters.addParameterListener(Constants::ID_WET_DRY, this);
-        parameters.addParameterListener(Constants::ID_OUT_GAIN, this);
+        parameters.addParameterListener(Constants::ID_BYPASS, this);
+        parameters.addParameterListener(Constants::ID_DRY_GAIN, this);
+        parameters.addParameterListener(Constants::ID_WET_GAIN, this);
 
-        lowPassFreqRamper.initialize(*parameters.getRawParameterValue(Constants::ID_LOW_PASS_FREQ), 0.1);
-        hiPassFreqRamper.initialize(*parameters.getRawParameterValue(Constants::ID_HI_PASS_FREQ), 0.1);
-        normalizeAttackRamper.initialize(*parameters.getRawParameterValue(Constants::ID_NORMALIZE_ATTACK), 0.1);
-        normalizeReleaseRamper.initialize(*parameters.getRawParameterValue(Constants::ID_NORMALIZE_RELEASE), 0.1);
-        normalizeAmountRamper.initialize(*parameters.getRawParameterValue(Constants::ID_NORMALIZE_AMOUNT), 0.01);
-        oddRamper.initialize(*parameters.getRawParameterValue(Constants::ID_ODD), 0.01);
-        evenRamper.initialize(*parameters.getRawParameterValue(Constants::ID_EVEN), 0.0001);
-        wetDryRamper.initialize(*parameters.getRawParameterValue(Constants::ID_WET_DRY), 0.01);
-        outGainRamper.initialize(*parameters.getRawParameterValue(Constants::ID_OUT_GAIN), 0.01);
-        
         inGain.setGainDecibels(*parameters.getRawParameterValue(Constants::ID_IN_GAIN));
+        
         
         const int bufferSize = 100000;
         
-        inBuffer.reset(bufferSize);
-        outBuffer.reset(bufferSize);
+        inBuffer.prepare(bufferSize);
+        outBuffer.prepare(bufferSize);
     }
     
     void prepare(const dsp::ProcessSpec& spec) override
     {
+        dryBuffer.setSize(spec.numChannels, spec.maximumBlockSize);
         inGain.prepare(spec);
         inputFilter.prepare(spec);
+        saturation.prepare(spec);
+        dryWetMix.prepare(spec);
+        matchedBypass.prepare(spec);
     }
     
     void process(const dsp::ProcessContextReplacing<float>& context) override
     {
+        auto inBlock = context.getInputBlock();
+        
+        size_t numSamples = inBlock.getNumSamples();
+        auto dryBlock = dsp::AudioBlock<float>(dryBuffer).getSubBlock(0, numSamples);
+        dryBlock.copyFrom(inBlock);
+        
         inGain.process(context);
         inputFilter.process(context);
+        saturation.process(context);
+        dryWetMix.process(context, dryBlock);
+        matchedBypass.process(context, dryBlock);
     }
     
     void reset() override
     {
         inGain.reset();
         inputFilter.reset();
+        saturation.reset();
+        dryWetMix.reset();
+        matchedBypass.reset();
     }
     
     void parameterChanged(const String& parameterID, float newValue ) override {
-        stm::DebugDisplay::debugLines[5] = parameterID + " changed to: " + String(newValue);
         
         if (parameterID == Constants::ID_IN_GAIN) {
             inGain.setGainDecibels(newValue);
         }
-        else if (parameterID == Constants::ID_LOW_PASS_FREQ) {
-            lowPassFreqRamper.updateTarget(newValue);
+        else if (parameterID == Constants::ID_DRY_GAIN) {
+            dryWetMix.setDryDecibels(newValue);
         }
-        else if (parameterID == Constants::ID_HI_PASS_FREQ) {
-            hiPassFreqRamper.updateTarget(newValue);
+        else if (parameterID == Constants::ID_WET_GAIN) {
+            dryWetMix.setWetDecibels(newValue);
         }
-        else if (parameterID == Constants::ID_NORMALIZE_ATTACK) {
-            normalizeAttackRamper.updateTarget(newValue);
-        }
-        else if (parameterID == Constants::ID_NORMALIZE_RELEASE) {
-            normalizeReleaseRamper.updateTarget(newValue);
-        }
-        else if (parameterID == Constants::ID_NORMALIZE_AMOUNT) {
-            normalizeAmountRamper.updateTarget(newValue);
-        }
-        else if (parameterID == Constants::ID_ODD) {
-            oddRamper.updateTarget(newValue);
-        }
-        else if (parameterID == Constants::ID_EVEN) {
-            evenRamper.updateTarget(newValue);
-        }
-        else if (parameterID == Constants::ID_WET_DRY) {
-            wetDryRamper.updateTarget(newValue);
-        }
-        else if (parameterID == Constants::ID_OUT_GAIN) {
-            outGainRamper.updateTarget(newValue);
+        else if (parameterID == Constants::ID_BYPASS) {
+            stm::DebugDisplay::add(5, "Bypass Value: " + String(newValue));
+            
+            if (newValue > 0.5) {
+                matchedBypass.setActive(true);
+            } else {
+                matchedBypass.setActive(false);
+            }
         }
     }
     
@@ -106,19 +99,12 @@ public:
 private:
     AudioProcessorValueTreeState& parameters;
     
+    AudioSampleBuffer dryBuffer;
+    
     dsp::Gain<float> inGain;
+    
     InputFilter inputFilter;
-    
-    //std::vector<ProcessorBase> processors;
-    
-    stm::RamperLinear lowPassFreqRamper
-        , hiPassFreqRamper
-        , normalizeAttackRamper
-        , normalizeReleaseRamper
-        , normalizeAmountRamper
-        , oddRamper
-        , evenRamper
-        , wetDryRamper
-        , outGainRamper;
-    
+    SaturationProcessor saturation;
+    stm::DryWetMix dryWetMix;
+    stm::MatchedBypass matchedBypass;
 };
