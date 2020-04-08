@@ -4,6 +4,10 @@
               companyName="Sailing To Mars" companyWebsite="sailingtomars.com"
               companyEmail="spenser0saling@gmail.com" cppLanguageStandard="17">
   <MAINGROUP id="pF94Py" name="Crispy Saturator">
+    <FILE id="jZTjDi" name="Montserrat-Light.ttf" compile="0" resource="1"
+          file="fonts/Montserrat/Montserrat-Light.ttf"/>
+    <FILE id="WHPQkY" name="Montserrat-ExtraLight.ttf" compile="0" resource="1"
+          file="fonts/Montserrat/Montserrat-ExtraLight.ttf"/>
     <GROUP id="{8E810A11-F1E0-1024-5AC9-4493862E5DA9}" name="DSP">
       <FILE id="rSEsLk" name="CrispyEngine.h" compile="0" resource="0" file="Source/CrispyEngine.h"/>
       <FILE id="PRLlys" name="InputFilter.h" compile="0" resource="0" file="Source/InputFilter.h"/>
@@ -12,16 +16,17 @@
     </GROUP>
     <GROUP id="{C3D73F0C-4B2A-828D-D28E-E3CB52ACDD75}" name="Components">
       <FILE id="IC6Vze" name="DecibelSlider.h" compile="0" resource="0" file="Source/DecibelSlider.h"/>
-      <FILE id="FQJThp" name="HarmonicsWindow.h" compile="0" resource="0"
-            file="Source/HarmonicsWindow.h"/>
-      <FILE id="VP4rBf" name="InputWindow.h" compile="0" resource="0" file="Source/InputWindow.h"/>
-      <FILE id="tbUC5Q" name="MoreControlWindow.h" compile="0" resource="0"
-            file="Source/MoreControlWindow.h"/>
-      <FILE id="PHaq81" name="OutputWindow.h" compile="0" resource="0" file="Source/OutputWindow.h"/>
+      <FILE id="FQJThp" name="SaturationPanel.h" compile="0" resource="0"
+            file="Source/SaturationPanel.h"/>
+      <FILE id="tbUC5Q" name="MoreControlPanel.h" compile="0" resource="0"
+            file="Source/MoreControlPanel.h"/>
+      <FILE id="tFgHQW" name="OddEvenSlider.h" compile="0" resource="0" file="Source/OddEvenSlider.h"/>
       <FILE id="wCHtdZ" name="SaturationVisualizer.h" compile="0" resource="0"
             file="Source/SaturationVisualizer.h"/>
     </GROUP>
     <GROUP id="{DE5FA1BF-C7AE-FA4C-AC07-1613705D8EB5}" name="Source">
+      <FILE id="TaSKBS" name="CrispyLookAndFeel.h" compile="0" resource="0"
+            file="Source/CrispyLookAndFeel.h"/>
       <FILE id="CQZh5o" name="Constants.h" compile="0" resource="0" file="Source/Constants.h"/>
       <FILE id="Ga3wGH" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>

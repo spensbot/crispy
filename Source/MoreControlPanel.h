@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    MoreControlWindow.h
+    MoreControlPanel.h
     Created: 28 Mar 2020 8:45:31pm
     Author:  Spenser Saling
 
@@ -16,10 +16,10 @@
 //==============================================================================
 /*
 */
-class MoreControlWindow    : public Component
+class MoreControlPanel    : public Component
 {
 public:
-    MoreControlWindow(AudioProcessorValueTreeState& params) : parameters(params)
+    MoreControlPanel(AudioProcessorValueTreeState& params) : parameters(params)
     {
         initSlider(autoGainAmountSlider, autoGainAmountSliderAttachment, Constants::ID_AUTO_GAIN_AMOUNT);
         initSlider(oversamplingSlider, oversamplingSliderAttachment, Constants::ID_OVERSAMPLING);
@@ -28,32 +28,39 @@ public:
         initSlider(wetGainSlider, wetGainSliderAttachment, Constants::ID_WET_GAIN);
         wetGainSlider.setSliderStyle(Slider::LinearVertical);
         
+        initLabel(autoGainLabel, &autoGainAmountSlider, "Auto-Gain");
+        initLabel(oversamplingLabel, &oversamplingSlider, "Oversampling");
+        initLabel(dryLabel, &dryGainSlider, "Dry");
+        initLabel(wetLabel, &wetGainSlider, "Wet");
+        
         addAndMakeVisible(matchedBypassButton);
-        matchedBypassButton.setButtonText("Matched Bypass");
+        matchedBypassButton.setButtonText("MATCHED BYPASS");
         matchedBypassButton.setClickingTogglesState(true);
         matchedBypassButtonAttachment.reset(new ButtonAttachment(parameters, Constants::ID_BYPASS, matchedBypassButton));
     }
 
-    ~MoreControlWindow()
+    ~MoreControlPanel()
     {
         
     }
 
     void paint (Graphics& g) override
     {
-        g.fillAll (Colours::darkgrey);
+        g.fillAll (Colour::fromHSV(0.0f, 0.0f, 0.4f, 0xff));
     }
 
     void resized() override
     {
         int padding = 5;
         int rotaryWidth = getWidth() / 4;
-        int sliderWidth = 20;
+        int sliderWidth = 30;
         int bypassWidth = 80;
-        int bypassHeight = 30;
+        int bypassHeight = 35;
         
         Rectangle<int> bounds = getLocalBounds();
         bounds.reduce(padding, padding);
+        
+        bounds.removeFromTop(50);
         
         autoGainAmountSlider.setBounds(bounds.removeFromLeft(rotaryWidth));
         oversamplingSlider.setBounds(bounds.removeFromRight(rotaryWidth));
@@ -74,6 +81,8 @@ private:
         oversamplingSlider,
         dryGainSlider,
         wetGainSlider;
+    
+    Label autoGainLabel, oversamplingLabel, dryLabel, wetLabel;
     
     TextButton matchedBypassButton;
     
@@ -96,5 +105,12 @@ private:
         attachment.reset(new SliderAttachment(parameters, paramId, slider));
     }
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MoreControlWindow)
+    void initLabel(Label& label, Component* owner, String text){
+        label.setText(text, dontSendNotification);
+        label.attachToComponent(owner, false);
+        label.setJustificationType(Justification::centred);
+        addAndMakeVisible(label);
+    }
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MoreControlPanel)
 };

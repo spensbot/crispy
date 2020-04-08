@@ -1,40 +1,26 @@
-/*
-  ==============================================================================
-
-    This file was auto-generated!
-
-    It contains the basic framework code for a JUCE plugin editor.
-
-  ==============================================================================
-*/
-
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-#include "Constants.h"
 
 //==============================================================================
 CrispySaturatorAudioProcessorEditor::CrispySaturatorAudioProcessorEditor (CrispySaturatorAudioProcessor& p)
-    : AudioProcessorEditor (&p), processor (p)
+: AudioProcessorEditor (&p)
+,processor (p)
 ,parameters(p.parameters)
-,inputWindow(parameters)
-,harmonicsWindow(parameters)
-,outputWindow(parameters)
-,moreControlWindow(parameters)
+,saturationPanel(parameters)
+,moreControlPanel(parameters)
 {
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
-    setResizable(true, true);
-    setResizeLimits(300, 300, 1920, 1080);
-    setSize (600, 700);
+    //setResizable(true, true);
+    //setResizeLimits(300, 300, 1920, 1080);
+    setSize (400, 630);
     
-    setLookAndFeel(&lookAndFeel);
+    setLookAndFeel(&crispyLookAndFeel);
     
-    addAndMakeVisible(inputWindow);
-    addAndMakeVisible(harmonicsWindow);
-    addAndMakeVisible(outputWindow);
-    addAndMakeVisible(moreControlWindow);
+    addAndMakeVisible(saturationPanel);
+    addAndMakeVisible(moreControlPanel);
     
     addAndMakeVisible(debugDisplay);
+    
+    //addAndMakeVisible(bypassedVeil);
 }
 
 CrispySaturatorAudioProcessorEditor::~CrispySaturatorAudioProcessorEditor()
@@ -51,15 +37,9 @@ void CrispySaturatorAudioProcessorEditor::resized()
 {
     Rectangle<int> bounds = getLocalBounds();
     
-    int inputWindowHeight = getHeight() / 6;
-    int moreControlHeight = getHeight() / 4;
+    //debugDisplay.setBounds(bounds.removeFromLeft(getWidth() * 0.3));
     
-    if (processor.debug){
-        debugDisplay.setBounds(bounds.removeFromLeft(getWidth() * 0.3));
-    }
-    
-    inputWindow.setBounds(bounds.removeFromTop(inputWindowHeight));
-    moreControlWindow.setBounds(bounds.removeFromBottom(moreControlHeight));
-    outputWindow.setBounds(bounds.removeFromBottom(inputWindowHeight));
-    harmonicsWindow.setBounds(bounds);
+    saturationPanel.setBounds(bounds.removeFromTop(getWidth()));
+    moreControlPanel.setBounds(bounds);
+    bypassedVeil.setBounds(getLocalBounds());
 }

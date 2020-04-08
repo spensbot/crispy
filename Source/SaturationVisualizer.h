@@ -28,10 +28,9 @@ public:
         
     }
     
-    void reset (float _odd, float _even)
+    void reset (float oddEvenMix, float saturation)
     {
-        odd = _odd;
-        even = _even;
+        saturator.set(oddEvenMix, saturation);
         updateBuffer();
     }
 
@@ -68,11 +67,7 @@ private:
     const float startAngle = -MathConstants<float>::pi;
     const float length = MathConstants<float>::twoPi;
     
-    float odd = 1.0f;
-    float even = 0.0f;
-    
-    stm::SaturatorCrispyOdd saturatorOdd;
-    stm::SaturatorCrispyEven saturatorEven;
+    stm::SaturatorCrispy saturator;
     
     void updateBuffer(){
         int numSamples = buffer.getNumSamples();
@@ -81,9 +76,7 @@ private:
         
         for (int sample=0 ; sample < numSamples ; sample++){
             float value = std::sin(pos);
-            float saturatedValue = saturatorEven.saturateSample(value, even);
-            saturatedValue = saturatorOdd.saturateSample(saturatedValue, odd);
-            buffer.setSample(0, sample, saturatedValue);
+            buffer.setSample(0, sample, saturator.saturateSample(value));
             
             pos += radsPerSample;
         }
@@ -91,3 +84,4 @@ private:
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SaturationVisualizer)
 };
+

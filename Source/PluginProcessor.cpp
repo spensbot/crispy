@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    This file was auto-generated!
-
-    It contains the basic framework code for a JUCE plugin processor.
-
-  ==============================================================================
-*/
-
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "Constants.h"
@@ -26,7 +16,9 @@ CrispySaturatorAudioProcessor::CrispySaturatorAudioProcessor()
 #endif
 parameters (*this, &undoManager, Identifier ("APVTSTutorial"),
 {
-    std::make_unique<AudioParameterFloat> (Constants::ID_IN_GAIN, "In Gain", 0.0f, 24.0f, 0.0f),
+    std::make_unique<AudioParameterFloat> (Constants::ID_SATURATION, "Saturation", 0.0f, 1.0f, 0.0f),
+    
+    std::make_unique<AudioParameterFloat> (Constants::ID_ODD_EVEN_MIX, "Odd/Even Mix", 0.0f, 1.0f, 0.0f),
     
     std::make_unique<AudioParameterFloat> (Constants::ID_LOW_PASS_FREQ,
                                            "Low Pass Frequency",
@@ -45,13 +37,6 @@ parameters (*this, &undoManager, Identifier ("APVTSTutorial"),
                                            NormalisableRange<float>(0.0f, 8.0f, 2.0f),
                                            0.0f),
     
-    std::make_unique<AudioParameterFloat> (Constants::ID_ODD,
-                                           "Odd Harmonics",
-                                           NormalisableRange<float>(1.0f, 100.0f, 0.01f, 0.3f),
-                                           1.0f),
-    
-    std::make_unique<AudioParameterFloat> (Constants::ID_EVEN, "Even Harmonics", 0.0f, 1.0f, 0.0f),
-    
     std::make_unique<AudioParameterFloat> (Constants::ID_WET_GAIN,
                                            "Wet Gain",
                                            NormalisableRange<float>(-100.0f, 6.0f, 0.01f, 3.0f),
@@ -62,7 +47,8 @@ parameters (*this, &undoManager, Identifier ("APVTSTutorial"),
                                            NormalisableRange<float>(-100.0f, 6.0f, 0.01f, 3.0f),
                                            0.0f),
     
-    std::make_unique<AudioParameterBool> (Constants::ID_BYPASS, "Bypass", false)
+    std::make_unique<AudioParameterBool> (Constants::ID_BYPASS, "Bypass", false),
+    std::make_unique<AudioParameterBool> (Constants::ID_MORE_CONTROL, "More Control", false)
 
     // equation for calculating skew factor for center point
     // std::log (0.5f) / std::log ((10.0 - 1.0) / (100.0 - 10.0))

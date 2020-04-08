@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    This file was auto-generated!
-
-    It contains the basic framework code for a JUCE plugin processor.
-
-  ==============================================================================
-*/
-
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
@@ -58,7 +48,6 @@ public:
     
     AudioProcessorValueTreeState parameters;
     UndoManager undoManager;
-    bool debug = true;
     
     CrispyEngine crispyEngine;
 

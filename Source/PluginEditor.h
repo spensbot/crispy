@@ -1,22 +1,11 @@
-/*
-  ==============================================================================
-
-    This file was auto-generated!
-
-    It contains the basic framework code for a JUCE plugin editor.
-
-  ==============================================================================
-*/
-
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
-#include "SaturationVisualizer.h"
-#include "InputWindow.h"
-#include "HarmonicsWindow.h"
-#include "OutputWindow.h"
-#include "MoreControlWindow.h"
+#include "SaturationPanel.h"
+#include "MoreControlPanel.h"
+#include "Constants.h"
+#include "CrispyLookAndFeel.h"
 
 //==============================================================================
 /**
@@ -24,8 +13,6 @@
 class CrispySaturatorAudioProcessorEditor  : public AudioProcessorEditor
 {
 public:
-    typedef AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
-    
     CrispySaturatorAudioProcessorEditor (CrispySaturatorAudioProcessor&);
     ~CrispySaturatorAudioProcessorEditor();
 
@@ -34,15 +21,15 @@ public:
     void resized() override;
 
 private:
-    stm::StmLookAndFeel lookAndFeel;
+    CrispyLookAndFeel crispyLookAndFeel;
     
     CrispySaturatorAudioProcessor& processor;
     AudioProcessorValueTreeState& parameters;
     
-    InputWindow inputWindow;
-    HarmonicsWindow harmonicsWindow;
-    OutputWindow outputWindow;
-    MoreControlWindow moreControlWindow;
+    SaturationPanel saturationPanel;
+    MoreControlPanel moreControlPanel;
+    
+    stm::DisabledVeil bypassedVeil;
     
     stm::DebugDisplay debugDisplay;
     
