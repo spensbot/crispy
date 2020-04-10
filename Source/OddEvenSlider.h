@@ -36,13 +36,22 @@ public:
     {
         auto bounds = getLocalBounds();
         
-        g.setColour (CrispyLookAndFeel::colourAccent);
-        g.setFont (28.0f);
-        g.drawText ("odd", bounds.removeFromLeft(textWidth),
-                    Justification::centred, true);   // draw some placeholder text
+        float val = slider.getValue();
         
+        auto baseColour = CrispyLookAndFeel::colourAccent;
+        float minAlpha = 0.3f;
+        float alphaRange = 1.0f - minAlpha;
+        float evenAlpha = val * alphaRange + minAlpha;
+        float oddAlpha = (1.0f - val) * alphaRange + minAlpha;
+        
+        g.setFont (28.0f);
+        g.setColour (baseColour.withAlpha(oddAlpha));
+        g.drawText ("odd", bounds.removeFromLeft(textWidth),
+                    Justification::centred, true);
+        
+        g.setColour (baseColour.withAlpha(evenAlpha));
         g.drawText ("even", bounds.removeFromRight(textWidth),
-                    Justification::centred, true);   // draw some placeholder text
+                    Justification::centred, true);
     }
 
     void resized() override
@@ -55,7 +64,6 @@ public:
     
     void sliderValueChanged (Slider *slider) override
     {
-        //slider.getValue();
         repaint();
     }
 

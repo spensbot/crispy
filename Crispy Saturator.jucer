@@ -15,6 +15,8 @@
             file="Source/SaturationProcessor.h"/>
     </GROUP>
     <GROUP id="{C3D73F0C-4B2A-828D-D28E-E3CB52ACDD75}" name="Components">
+      <FILE id="sVirEc" name="SaturationVisualizerV2.h" compile="0" resource="0"
+            file="Source/SaturationVisualizerV2.h"/>
       <FILE id="IC6Vze" name="DecibelSlider.h" compile="0" resource="0" file="Source/DecibelSlider.h"/>
       <FILE id="FQJThp" name="SaturationPanel.h" compile="0" resource="0"
             file="Source/SaturationPanel.h"/>

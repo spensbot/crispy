@@ -13,7 +13,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Constants.h"
 #include "OddEvenSlider.h"
-#include "SaturationVisualizer.h"
+#include "SaturationVisualizerV2.h"
 #include "CrispyLookAndFeel.h"
 
 //==============================================================================
