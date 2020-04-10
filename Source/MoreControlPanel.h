@@ -32,11 +32,6 @@ public:
         initLabel(oversamplingLabel, &oversamplingSlider, "Oversampling");
         initLabel(dryLabel, &dryGainSlider, "Dry");
         initLabel(wetLabel, &wetGainSlider, "Wet");
-        
-        addAndMakeVisible(matchedBypassButton);
-        matchedBypassButton.setButtonText("MATCHED BYPASS");
-        matchedBypassButton.setClickingTogglesState(true);
-        matchedBypassButtonAttachment.reset(new ButtonAttachment(parameters, Constants::ID_BYPASS, matchedBypassButton));
     }
 
     ~MoreControlPanel()
@@ -54,8 +49,7 @@ public:
         int padding = 5;
         int rotaryWidth = getWidth() / 4;
         int sliderWidth = 30;
-        int bypassWidth = 80;
-        int bypassHeight = 35;
+        int centerGap = 60;
         
         Rectangle<int> bounds = getLocalBounds();
         bounds.reduce(padding, padding);
@@ -65,13 +59,11 @@ public:
         autoGainAmountSlider.setBounds(bounds.removeFromLeft(rotaryWidth));
         oversamplingSlider.setBounds(bounds.removeFromRight(rotaryWidth));
         
-        int excess = bounds.getWidth() - 2*sliderWidth - 2*padding - bypassWidth;
+        int excess = bounds.getWidth() - 2*sliderWidth - 2*padding - centerGap;
         bounds.reduce(excess/2, 0);
         
         dryGainSlider.setBounds(bounds.removeFromLeft(sliderWidth));
         wetGainSlider.setBounds(bounds.removeFromRight(sliderWidth));
-        bounds.reduce(padding, padding);
-        matchedBypassButton.setBounds(bounds.removeFromBottom(bypassHeight));
     }
 
 private:
@@ -84,17 +76,13 @@ private:
     
     Label autoGainLabel, oversamplingLabel, dryLabel, wetLabel;
     
-    TextButton matchedBypassButton;
-    
     typedef AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
-    typedef AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
+
     
     std::unique_ptr<SliderAttachment> autoGainAmountSliderAttachment,
         oversamplingSliderAttachment,
         dryGainSliderAttachment,
         wetGainSliderAttachment;
-    
-    std::unique_ptr<ButtonAttachment> matchedBypassButtonAttachment;
     
     void initSlider(Slider& slider, std::unique_ptr<SliderAttachment>& attachment, String paramId){
         addAndMakeVisible(slider);
@@ -109,6 +97,7 @@ private:
         label.setText(text, dontSendNotification);
         label.attachToComponent(owner, false);
         label.setJustificationType(Justification::centred);
+        label.setFont(Font(24.0f));
         addAndMakeVisible(label);
     }
     

@@ -19,7 +19,7 @@
 //==============================================================================
 /*
 */
-class SaturationPanel    : public Component, public Slider::Listener
+class SaturationPanel    : public Component, public Slider::Listener, public Button::Listener
 {
 public:
     SaturationPanel(AudioProcessorValueTreeState& params)
@@ -41,8 +41,13 @@ public:
         
         addAndMakeVisible(moreControlButton);
         moreControlButton.setLookAndFeel(&moreControlButtonLookAndFeel);
-        moreControlButton.setButtonText("MORE CONTROL");
+        
+        updateMoreControlButton();
         moreControlButton.setClickingTogglesState(true);
+        moreControlButton.addListener(this);
+        moreControlButtonAttachment.reset(new ButtonAttachment(parameters, Constants::ID_MORE_CONTROL, moreControlButton));
+        
+        saturationVisualizer.reset(oddEvenSlider.getValue(), saturationSlider.getValue());
     }
 
     ~SaturationPanel()
@@ -84,6 +89,13 @@ public:
         saturationVisualizer.reset(oddEvenSlider.getValue(), saturationSlider.getValue());
         repaint();
     }
+    
+    void buttonClicked (Button *button) override
+    {
+        updateMoreControlButton();
+    }
+
+    TextButton moreControlButton;
 
 private:
     class MoreControlButtonLookAndFeel : public LookAndFeel_V4
@@ -99,16 +111,26 @@ private:
                                                    bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override {}
     };
     
+    void updateMoreControlButton() {
+        bool isMoreControl = moreControlButton.getToggleState();
+        if (isMoreControl){
+            moreControlButton.setButtonText("KEEP IT SIMPLE");
+        }
+        else {
+            moreControlButton.setButtonText("MORE CONTROL");
+        }
+    }
+    
     AudioProcessorValueTreeState& parameters;
     SaturationVisualizer saturationVisualizer;
     Slider oddEvenSlider, saturationSlider;
     
     OddEvenSlider oddEvenSliderLabeled;
     
-    DropShadow glow;
-    
-    TextButton moreControlButton;
     MoreControlButtonLookAndFeel moreControlButtonLookAndFeel;
+    
+    typedef AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
+    std::unique_ptr<ButtonAttachment> moreControlButtonAttachment;
     
     typedef AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
     std::unique_ptr<SliderAttachment> oddEvenSliderAttachment, saturationSliderAttachment;

@@ -48,7 +48,7 @@ parameters (*this, &undoManager, Identifier ("APVTSTutorial"),
                                            0.0f),
     
     std::make_unique<AudioParameterBool> (Constants::ID_BYPASS, "Bypass", false),
-    std::make_unique<AudioParameterBool> (Constants::ID_MORE_CONTROL, "More Control", false)
+    std::make_unique<AudioParameterBool> (Constants::ID_MORE_CONTROL, "More Control", true)
 
     // equation for calculating skew factor for center point
     // std::log (0.5f) / std::log ((10.0 - 1.0) / (100.0 - 10.0))
