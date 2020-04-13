@@ -34,6 +34,7 @@ public:
         dcFilter.prepare(spec);
         autoGain.prepare(spec);
         oversamplingEngine.initProcessing(spec.maximumBlockSize);
+        saturator.prepare(spec);
     }
     
     void process (const dsp::ProcessContextReplacing<float>& context) override
@@ -48,6 +49,7 @@ public:
     
     void reset () override
     {
+        saturator.reset();
         dcFilter.reset();
         autoGain.reset();
         oversamplingEngine.reset();
@@ -55,9 +57,13 @@ public:
     
     void parameterChanged (const String& parameterID, float newValue) override
     {
-        if (parameterID == Constants::ID_SATURATION || parameterID == Constants::ID_ODD_EVEN_MIX)
+        if (parameterID == Constants::ID_SATURATION)
         {
-            saturator.set(*oddEvenMix, *saturation);
+            saturator.setOdd(newValue);
+        }
+        else if (parameterID == Constants::ID_ODD_EVEN_MIX)
+        {
+            saturator.setEven(newValue);
         }
         else if (parameterID == Constants::ID_AUTO_GAIN_AMOUNT)
         {
@@ -65,7 +71,7 @@ public:
         }
         else if (parameterID == Constants::ID_OVERSAMPLING)
         {
-            autoGain.setAmount(newValue);
+            
         }
     }
     

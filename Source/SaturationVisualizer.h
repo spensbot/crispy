@@ -28,9 +28,10 @@ public:
         
     }
     
-    void reset (float oddEvenMix, float saturation)
+    void reset (float evenMix, float oddPower)
     {
-        saturator.set(oddEvenMix, saturation);
+        saturator.setEven(evenMix);
+        saturator.setOdd(oddPower);
         updateBuffer();
     }
 
@@ -40,7 +41,7 @@ public:
         int steps = buffer.getNumSamples();
         float pos = 0.0f;
         float y0 = (float)height / 2;
-        float yMax = y0;
+        float yMax = -y0;
         
         g.setColour (Colour::fromHSV(0.0f,0.0f,1.0f,1.0f));
         auto* bufferPointer = buffer.getReadPointer(0);

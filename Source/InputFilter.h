@@ -58,7 +58,7 @@ public:
     }
     
 private:
-    const float Q = 24.0f; // filter db/octave
+    const float Q = 1.0f;
     
     double sampleRate = 44000.0;
     
@@ -77,6 +77,7 @@ private:
     
     void setLowPassFreq(float newFreq){
         auto lowPassCoefs = FilterCoefs::makeLowPass(sampleRate, newFreq, Q);
+        //auto lowPassCoefs = FilterCoefs::makeFirstOrderLowPass(sampleRate, newFreq);
         
         auto& lowPassFilter = processorChain.get<lowPassIndex>();
         
@@ -87,6 +88,7 @@ private:
     
     void setHiPassFreq(float newFreq){
         auto hiPassCoefs = FilterCoefs::makeHighPass(sampleRate, newFreq, Q);
+        //auto hiPassCoefs = FilterCoefs::makeFirstOrderHighPass(sampleRate, newFreq);
         
         auto& hiPassFilter = processorChain.template get<hiPassIndex>();
         

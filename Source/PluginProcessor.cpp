@@ -34,7 +34,7 @@ parameters (*this, &undoManager, Identifier ("APVTSTutorial"),
     
     std::make_unique<AudioParameterFloat> (Constants::ID_OVERSAMPLING,
                                            "Oversampling",
-                                           NormalisableRange<float>(0.0f, 8.0f, 2.0f),
+                                           NormalisableRange<float>(0.0f, 3.0f, 1.0f),
                                            0.0f),
     
     std::make_unique<AudioParameterFloat> (Constants::ID_WET_GAIN,

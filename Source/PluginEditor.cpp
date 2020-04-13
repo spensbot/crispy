@@ -41,9 +41,6 @@ void CrispySaturatorAudioProcessorEditor::paint (Graphics& g)
 
 void CrispySaturatorAudioProcessorEditor::resized()
 {
-//    int bypassWidth = 80;
-//    int bypassHeight = 35;
-    
     Rectangle<int> bounds = getLocalBounds();
     
     if(debug){
@@ -56,9 +53,10 @@ void CrispySaturatorAudioProcessorEditor::resized()
     moreControlPanel.setBounds(bounds);
     
     int bypassWidth = 80;
-    int remove = getWidth() - bypassWidth;
-    bounds.reduce(remove/2, 30);
-    bounds.removeFromTop(100);
+    int bypassHeight = 40;
+    int excessWidth = bounds.getWidth() - bypassWidth;
+    bounds.reduce(excessWidth/2, 40);
+    bounds.removeFromTop(bounds.getHeight() - bypassHeight);
     matchedBypassButton.setBounds(bounds);
 }
 
@@ -78,14 +76,6 @@ void CrispySaturatorAudioProcessorEditor::updateWindow()
     
     Boolean isBypassed = matchedBypassButton.getToggleState();
     Boolean isMoreControl = saturationPanel.moreControlButton.getToggleState();
-    
-    stm::DebugDisplay::add(11, "Processor Params:");
-    stm::DebugDisplay::add(12, "*bypass: " + String(*bypass));
-    stm::DebugDisplay::add(13, "*moreControl: " + String(*moreControl));
-    
-    stm::DebugDisplay::add(11, "Button Toggle State:");
-    stm::DebugDisplay::add(12, "Bypass: " + String(isBypassed));
-    stm::DebugDisplay::add(13, "More Control: " + String(isMoreControl));
     
     if (isBypassed) {
         bypassedVeil.setVisible(true);

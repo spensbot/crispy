@@ -28,9 +28,10 @@ public:
         
     }
     
-    void reset (float oddEvenMix, float saturation)
+    void reset (float evenMix, float oddPower)
     {
-        saturator.set(oddEvenMix, saturation);
+        saturator.setEven(evenMix);
+        saturator.setOdd(oddPower);
         updateBuffer();
     }
 
@@ -46,8 +47,8 @@ public:
         auto* bufferPointer = buffer.getReadPointer(0);
         
         for (int i=0 ; i<numSamples ; i++){
-            float sample = bufferPointer[i];
-            float y = y0 + sample * yMax;
+//            float sample = bufferPointer[i];
+//            float y = y0 + sample * yMax;
 
 //            g.drawLine(pos, y0, pos, y, 2.0f);
 //            g.fillEllipse(pos - dotRadius, y - dotRadius, dotRadius * 2, dotRadius * 2);

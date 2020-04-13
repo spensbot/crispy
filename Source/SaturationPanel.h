@@ -57,10 +57,10 @@ public:
 
     void paint (Graphics& g) override
     {
-        auto bounds = getBounds().reduced(20, 10);
+        auto bounds = getLocalBounds().reduced(10, 0);
 
         g.setColour (CrispyLookAndFeel::colourAccent);
-        g.setFont (50.0f);
+        g.setFont (55.0f);
         g.drawText ("Crispy", bounds, Justification::topLeft, true);
     }
 

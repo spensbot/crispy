@@ -43,6 +43,9 @@ public:
         float alphaRange = 1.0f - minAlpha;
         float evenAlpha = val * alphaRange + minAlpha;
         float oddAlpha = (1.0f - val) * alphaRange + minAlpha;
+//        float maxS = baseColour.getSaturation();
+//        float evenS = val * maxS;
+//        float oddS = (1.0f - val ) * maxS;
         
         g.setFont (28.0f);
         g.setColour (baseColour.withAlpha(oddAlpha));

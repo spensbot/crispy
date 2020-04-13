@@ -43,7 +43,7 @@ public:
         
         Path p;
         auto pointerLength = radius * 0.4f;
-        auto pointerThickness = 5.0f;
+        auto pointerThickness = pointerLength / 4;
         p.addRectangle (-pointerThickness * 0.5f, -radius, pointerThickness, pointerLength);
         p.applyTransform (AffineTransform::rotation (angle).translated (centreX, centreY));
         // pointer

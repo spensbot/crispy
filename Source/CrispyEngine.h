@@ -75,8 +75,6 @@ public:
             dryWetMix.setWetDecibels(newValue);
         }
         else if (parameterID == Constants::ID_BYPASS) {
-            stm::DebugDisplay::add(5, "Bypass Value: " + String(newValue));
-            
             if (newValue > 0.5) {
                 matchedBypass.setActive(true);
             } else {
