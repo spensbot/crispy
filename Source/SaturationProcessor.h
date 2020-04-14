@@ -13,80 +13,38 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Constants.h"
 
+class CrispyEngine;
+
 class SaturationProcessor : public AudioProcessorValueTreeState::Listener, public dsp::ProcessorBase
 {
 public:
-    SaturationProcessor(AudioProcessorValueTreeState& params)
-    : parameters(params)
-    , oversamplingEngine(2, 3, dsp::Oversampling<float>::FilterType::filterHalfBandPolyphaseIIR)
-    {
-        parameters.addParameterListener(Constants::ID_SATURATION, this);
-        parameters.addParameterListener(Constants::ID_ODD_EVEN_MIX, this);
-        parameters.addParameterListener(Constants::ID_AUTO_GAIN_AMOUNT, this);
-        parameters.addParameterListener(Constants::ID_OVERSAMPLING, this);
-        
-        oddEvenMix = parameters.getRawParameterValue(Constants::ID_ODD_EVEN_MIX);
-        saturation = parameters.getRawParameterValue(Constants::ID_SATURATION);
-    }
+    SaturationProcessor(AudioProcessorValueTreeState& params, CrispyEngine& engine);
     
-    void prepare (const dsp::ProcessSpec& spec) override
-    {
-        dcFilter.prepare(spec);
-        autoGain.prepare(spec);
-        oversamplingEngine.initProcessing(spec.maximumBlockSize);
-        saturator.prepare(spec);
-    }
+    void prepare (const dsp::ProcessSpec& _spec) override;
     
-    void process (const dsp::ProcessContextReplacing<float>& context) override
-    {
-        autoGain.process(context);
-        
-        saturator.process(context);
-        dcFilter.process(context);
-        
-        autoGain.processRemoveGain(context);
-    }
+    void process (const dsp::ProcessContextReplacing<float>& context) override;
     
-    void reset () override
-    {
-        saturator.reset();
-        dcFilter.reset();
-        autoGain.reset();
-        oversamplingEngine.reset();
-    }
+    void reset () override;
     
-    void parameterChanged (const String& parameterID, float newValue) override
-    {
-        if (parameterID == Constants::ID_SATURATION)
-        {
-            saturator.setOdd(newValue);
-        }
-        else if (parameterID == Constants::ID_ODD_EVEN_MIX)
-        {
-            saturator.setEven(newValue);
-        }
-        else if (parameterID == Constants::ID_AUTO_GAIN_AMOUNT)
-        {
-            autoGain.setAmount(newValue);
-        }
-        else if (parameterID == Constants::ID_OVERSAMPLING)
-        {
-            
-        }
-    }
+    void parameterChanged (const String& parameterID, float newValue) override;
     
 private:
+    dsp::ProcessSpec spec;
     
     AudioProcessorValueTreeState& parameters;
+    CrispyEngine& crispyEngine;
     
-    dsp::Oversampling<float> oversamplingEngine;
+    dsp::Oversampling<float>* oversamplingEngine;
+    
+    OwnedArray<dsp::Oversampling<float>, CriticalSection> oversamplingEngines;
     
     std::atomic<float>* oddEvenMix;
     std::atomic<float>* saturation;
+    std::atomic<float>* isMoreControl;
     
     stm::SaturatorCrispy saturator;
-    
     stm::DCFilter dcFilter;
     stm::AutoGain autoGain;
-    
+                                           
+    void setOversamplingEngine(int index);
 };

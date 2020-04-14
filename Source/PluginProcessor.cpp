@@ -34,7 +34,7 @@ parameters (*this, &undoManager, Identifier ("APVTSTutorial"),
     
     std::make_unique<AudioParameterFloat> (Constants::ID_OVERSAMPLING,
                                            "Oversampling",
-                                           NormalisableRange<float>(0.0f, 3.0f, 1.0f),
+                                           NormalisableRange<float>(0.0f, 4.0f, 1.0f),
                                            0.0f),
     
     std::make_unique<AudioParameterFloat> (Constants::ID_WET_GAIN,
@@ -53,7 +53,7 @@ parameters (*this, &undoManager, Identifier ("APVTSTutorial"),
     // equation for calculating skew factor for center point
     // std::log (0.5f) / std::log ((10.0 - 1.0) / (100.0 - 10.0))
 })
-, crispyEngine(parameters)
+, crispyEngine(parameters, *this)
 {
     
 }

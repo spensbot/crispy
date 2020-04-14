@@ -9,8 +9,12 @@
     <FILE id="WHPQkY" name="Montserrat-ExtraLight.ttf" compile="0" resource="1"
           file="fonts/Montserrat/Montserrat-ExtraLight.ttf"/>
     <GROUP id="{8E810A11-F1E0-1024-5AC9-4493862E5DA9}" name="DSP">
+      <FILE id="gfnJlQ" name="CrispyEngine.cpp" compile="1" resource="0"
+            file="Source/CrispyEngine.cpp"/>
       <FILE id="rSEsLk" name="CrispyEngine.h" compile="0" resource="0" file="Source/CrispyEngine.h"/>
       <FILE id="PRLlys" name="InputFilter.h" compile="0" resource="0" file="Source/InputFilter.h"/>
+      <FILE id="GHMBEl" name="SaturationProcessor.cpp" compile="1" resource="0"
+            file="Source/SaturationProcessor.cpp"/>
       <FILE id="UTmliD" name="SaturationProcessor.h" compile="0" resource="0"
             file="Source/SaturationProcessor.h"/>
     </GROUP>

@@ -18,75 +18,23 @@
 class CrispyEngine: public dsp::ProcessorBase, public AudioProcessorValueTreeState::Listener
 {
 public:
-    CrispyEngine(AudioProcessorValueTreeState& params)
-    : parameters(params)
-    , inputFilter(params)
-    , saturation(params)
-    {
-        parameters.addParameterListener(Constants::ID_BYPASS, this);
-        parameters.addParameterListener(Constants::ID_DRY_GAIN, this);
-        parameters.addParameterListener(Constants::ID_WET_GAIN, this);
-        
-        const int bufferSize = 100000;
-        
-        inBuffer.prepare(bufferSize);
-        outBuffer.prepare(bufferSize);
-        
-        isMoreControl = parameters.getRawParameterValue(Constants::ID_MORE_CONTROL);
-    }
+    CrispyEngine(AudioProcessorValueTreeState& params, AudioProcessor& p);
     
-    void prepare(const dsp::ProcessSpec& spec) override
-    {
-        dryBuffer.setSize(spec.numChannels, spec.maximumBlockSize);
-        inputFilter.prepare(spec);
-        saturation.prepare(spec);
-        dryWetMix.prepare(spec);
-        matchedBypass.prepare(spec);
-    }
+    void prepare(const dsp::ProcessSpec& spec) override;
     
-    void process(const dsp::ProcessContextReplacing<float>& context) override
-    {
-        auto inBlock = context.getInputBlock();
-        
-        size_t numSamples = inBlock.getNumSamples();
-        auto dryBlock = dsp::AudioBlock<float>(dryBuffer).getSubBlock(0, numSamples);
-        dryBlock.copyFrom(inBlock);
-        
-        inputFilter.process(context);
-        saturation.process(context);
-        dryWetMix.process(context, dryBlock);
-        matchedBypass.process(context, dryBlock);
-    }
+    void process(const dsp::ProcessContextReplacing<float>& context) override;
     
-    void reset() override
-    {
-        inputFilter.reset();
-        saturation.reset();
-        dryWetMix.reset();
-        matchedBypass.reset();
-    }
+    void reset() override;
     
-    void parameterChanged(const String& parameterID, float newValue ) override {
-        
-        if (parameterID == Constants::ID_DRY_GAIN) {
-            dryWetMix.setDryDecibels(newValue);
-        }
-        else if (parameterID == Constants::ID_WET_GAIN) {
-            dryWetMix.setWetDecibels(newValue);
-        }
-        else if (parameterID == Constants::ID_BYPASS) {
-            if (newValue > 0.5) {
-                matchedBypass.setActive(true);
-            } else {
-                matchedBypass.setActive(false);
-            }
-        }
-    }
+    void parameterChanged(const String& parameterID, float newValue ) override;
+    
+    void setLatencySamples(float newLatency);
     
     stm::RecircBuffer inBuffer, outBuffer;
     
 private:
     AudioProcessorValueTreeState& parameters;
+    AudioProcessor& processor;
     
     AudioSampleBuffer dryBuffer;
     
@@ -96,4 +44,5 @@ private:
     SaturationProcessor saturation;
     stm::DryWetMix dryWetMix;
     stm::MatchedBypass matchedBypass;
+    stm::DelaySimple latencyDelay;
 };

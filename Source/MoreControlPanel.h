@@ -16,7 +16,7 @@
 //==============================================================================
 /*
 */
-class MoreControlPanel    : public Component
+class MoreControlPanel    : public Component, private Slider::Listener
 {
 public:
     MoreControlPanel(AudioProcessorValueTreeState& params) : parameters(params)
@@ -26,6 +26,7 @@ public:
         
         initSlider(autoGainAmountSlider, autoGainAmountSliderAttachment, Constants::ID_AUTO_GAIN_AMOUNT);
         initSlider(oversamplingSlider, oversamplingSliderAttachment, Constants::ID_OVERSAMPLING);
+        oversamplingSlider.addListener(this);
         initSlider(dryGainSlider, dryGainSliderAttachment, Constants::ID_DRY_GAIN);
         dryGainSlider.setSliderStyle(Slider::LinearVertical);
         dryGainSlider.setPopupDisplayEnabled(true, true, this);
@@ -41,6 +42,7 @@ public:
         initLabel(oversamplingLabel, &oversamplingSlider, "Oversampling");
         initLabel(dryLabel, &dryGainSlider, "Dry");
         initLabel(wetLabel, &wetGainSlider, "Wet");
+        setOversamplingText();
         
         addAndMakeVisible(hpIcon);
         addAndMakeVisible(lpIcon);
@@ -92,6 +94,12 @@ public:
         dryGainSlider.setBounds(bounds.removeFromLeft(sliderWidth));
         wetGainSlider.setBounds(bounds.removeFromRight(sliderWidth));
     }
+    
+    void sliderValueChanged(Slider* slider) override{
+        if (slider == &oversamplingSlider){
+            setOversamplingText();
+        }
+    }
 
 private:
     AudioProcessorValueTreeState& parameters;
@@ -133,8 +141,18 @@ private:
         label.setText(text, dontSendNotification);
         label.attachToComponent(owner, false);
         label.setJustificationType(Justification::centred);
-        label.setFont(Font(24.0f));
+        label.setFont(Font(18.0f));
         addAndMakeVisible(label);
+    }
+    
+    void setOversamplingText(){
+        String labelText = "Oversampling";
+        int oversamplingFactor = (int) oversamplingSlider.getValue();
+        if (oversamplingFactor > 0.0f){
+            int oversamplingMultiplier = pow(2, oversamplingFactor);
+            labelText = String(oversamplingMultiplier) + "x Oversampling";
+        }
+        oversamplingLabel.setText(labelText, dontSendNotification);
     }
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MoreControlPanel)
