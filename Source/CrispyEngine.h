@@ -40,9 +40,12 @@ private:
     
     std::atomic<float>* isMoreControl;
     
-    InputFilter inputFilter;
+    //InputFilter inputFilter;
+    InputFilterVariable inputFilter;
     SaturationProcessor saturation;
     stm::DryWetMix dryWetMix;
     stm::MatchedBypass matchedBypass;
     stm::DelaySimple latencyDelay;
+    
+    void updateParameters();
 };

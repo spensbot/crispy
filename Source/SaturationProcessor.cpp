@@ -34,14 +34,12 @@ void SaturationProcessor::prepare (const dsp::ProcessSpec& _spec)
     dcFilter.prepare(spec);
     
     //Prepare the oversampling engines
-    for (size_t i=0 ; i<5; ++i){
+    for (auto i=0 ; i<5; ++i){
         oversamplingEngines.add(new dsp::Oversampling<float>(2, i, dsp::Oversampling<float>::FilterType::filterHalfBandPolyphaseIIR));
         oversamplingEngines[i]->initProcessing( spec.maximumBlockSize );
     }
     
-    //Set the oversampling engine
-    int currentOversamplingFactor = (int) *parameters.getRawParameterValue(Constants::ID_OVERSAMPLING);
-    setOversamplingEngine(currentOversamplingFactor);
+    updateParameters();
 }
 
 void SaturationProcessor::process (const dsp::ProcessContextReplacing<float>& context)
@@ -106,4 +104,12 @@ void SaturationProcessor::setOversamplingEngine(int index){
     stm::DebugDisplay::set(11, "Oversampling Multiplier: " + String(oversamplingMultiplier));
     stm::DebugDisplay::set(12, "Oversampling Sample Rate: " + String(oversamplingSpec.sampleRate));
     stm::DebugDisplay::set(13, "Oversampling Block Size: " + String(oversamplingSpec.maximumBlockSize));
+}
+
+void SaturationProcessor::updateParameters()
+{
+    saturator.setOdd(*parameters.getRawParameterValue(Constants::ID_SATURATION));
+    saturator.setEven(*parameters.getRawParameterValue(Constants::ID_ODD_EVEN_MIX));
+    autoGain.setAmount(*parameters.getRawParameterValue(Constants::ID_AUTO_GAIN_AMOUNT));
+    setOversamplingEngine( int( *parameters.getRawParameterValue(Constants::ID_OVERSAMPLING) ) );
 }
