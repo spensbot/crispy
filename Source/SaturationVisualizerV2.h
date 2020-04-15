@@ -47,12 +47,12 @@ public:
         auto* bufferPointer = buffer.getReadPointer(0);
         
         for (int i=0 ; i<numSamples ; i++){
-//            float sample = bufferPointer[i];
-//            float y = y0 + sample * yMax;
-
-//            g.drawLine(pos, y0, pos, y, 2.0f);
-//            g.fillEllipse(pos - dotRadius, y - dotRadius, dotRadius * 2, dotRadius * 2);
-//            g.drawLine(pos, y - 5, pos, y + 5, float(dotRadius));
+            //            float sample = bufferPointer[i];
+            //            float y = y0 + sample * yMax;
+            
+            //            g.drawLine(pos, y0, pos, y, 2.0f);
+            //            g.fillEllipse(pos - dotRadius, y - dotRadius, dotRadius * 2, dotRadius * 2);
+            //            g.drawLine(pos, y - 5, pos, y + 5, float(dotRadius));
             
             pos += float(cc);
         }

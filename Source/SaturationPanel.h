@@ -15,6 +15,7 @@
 #include "OddEvenSlider.h"
 #include "SaturationVisualizerV2.h"
 #include "CrispyLookAndFeel.h"
+#include "Glow.h"
 
 //==============================================================================
 /*
@@ -26,6 +27,7 @@ public:
     : parameters(params)
     , oddEvenSliderLabeled(oddEvenSlider)
     {
+        addAndMakeVisible(glow);
         addAndMakeVisible(saturationVisualizer);
         
         addAndMakeVisible(saturationSlider);
@@ -48,6 +50,8 @@ public:
         moreControlButtonAttachment.reset(new ButtonAttachment(parameters, Constants::ID_MORE_CONTROL, moreControlButton));
         
         saturationVisualizer.reset(oddEvenSlider.getValue(), saturationSlider.getValue());
+        
+        updateVisualizer();
     }
 
     ~SaturationPanel()
@@ -71,6 +75,7 @@ public:
         auto visualizerHeight = getHeight() / 2;
         
         Rectangle<int> bounds = getLocalBounds();
+        glow.setBounds(bounds);
         
         moreControlButton.setBounds(bounds.removeFromBottom(buttonHeight));
         
@@ -86,7 +91,7 @@ public:
     
     void sliderValueChanged (Slider *slider) override
     {
-        saturationVisualizer.reset(oddEvenSlider.getValue(), saturationSlider.getValue());
+        updateVisualizer();
         repaint();
     }
     
@@ -111,6 +116,24 @@ private:
                                                    bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override {}
     };
     
+    void updateVisualizer() {
+        float odd = saturationSlider.getValue();
+        float even = oddEvenSlider.getValue();
+        saturationVisualizer.reset(even, odd);
+        
+        float glowSizeMin = 0.5f;
+        float glowSizeMax = 0.7f;
+        float glowAlphaMin = 0.5f;
+        float glowAlphaMax = 0.8f;
+        float glowSizeRange = glowSizeMax - glowSizeMin;
+        float glowAlphaRange = glowAlphaMax - glowAlphaMin;
+        
+        float glowSize = glowSizeMin + glowSizeRange * odd;
+        float glowAlpha = glowAlphaMin + glowAlphaRange * odd;
+        
+        glow.set(glowAlpha, glowSize, CrispyLookAndFeel::colourAccent);
+    }
+    
     void updateMoreControlButton() {
         bool isMoreControl = moreControlButton.getToggleState();
         if (isMoreControl){
@@ -134,6 +157,8 @@ private:
     
     typedef AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
     std::unique_ptr<SliderAttachment> oddEvenSliderAttachment, saturationSliderAttachment;
+    
+    Glow glow;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SaturationPanel)
 };

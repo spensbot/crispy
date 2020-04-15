@@ -42,7 +42,8 @@ public:
         float minAlpha = 0.3f;
         float alphaRange = 1.0f - minAlpha;
         float evenAlpha = val * alphaRange + minAlpha;
-        float oddAlpha = (1.0f - val) * alphaRange + minAlpha;
+        //float oddAlpha = (1.0f - val) * alphaRange + minAlpha;
+        float oddAlpha = 1.0f;
 //        float maxS = baseColour.getSaturation();
 //        float evenS = val * maxS;
 //        float oddS = (1.0f - val ) * maxS;
