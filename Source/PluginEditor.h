@@ -23,7 +23,7 @@ public:
     void buttonClicked (Button *button) override;
 
 private:
-    const bool debug = true;
+    const bool debug = false;
     const int mainWidth = 400;
     const int debugWidth = 200;
     const float saturationHeightRatio = 1.0;
