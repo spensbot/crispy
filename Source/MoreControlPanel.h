@@ -42,6 +42,8 @@ public:
         initLabel(oversamplingLabel, &oversamplingSlider, "Oversampling");
         initLabel(dryLabel, &dryGainSlider, "Dry");
         initLabel(wetLabel, &wetGainSlider, "Wet");
+        dryLabel.setFont(Font(22.0f));
+        wetLabel.setFont(Font(22.0f));
         setOversamplingText();
         
         addAndMakeVisible(hpIcon);

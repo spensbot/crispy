@@ -31,6 +31,9 @@ CrispySaturatorAudioProcessorEditor::CrispySaturatorAudioProcessorEditor (Crispy
 
 CrispySaturatorAudioProcessorEditor::~CrispySaturatorAudioProcessorEditor()
 {
+    matchedBypassButton.removeListener(this);
+    saturationPanel.moreControlButton.removeListener(this);
+    setLookAndFeel(nullptr);
 }
 
 //==============================================================================

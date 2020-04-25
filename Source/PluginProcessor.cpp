@@ -3,7 +3,7 @@
 #include "Constants.h"
 
 //==============================================================================
-CrispySaturatorAudioProcessor::CrispySaturatorAudioProcessor()
+CrispySaturatorAudioProcessor::CrispySaturatorAudioProcessor() : 
 #ifndef JucePlugin_PreferredChannelConfigurations
      : AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect

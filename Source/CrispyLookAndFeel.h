@@ -63,7 +63,7 @@ public:
                                                bool shouldDrawButtonAsHighlighted,
                                                bool shouldDrawButtonAsDown) override
     {
-        auto cornerSize = 6.0f;
+        auto cornerSize = 6.5567f;
         auto bounds = button.getLocalBounds().toFloat().reduced (0.5f, 0.5f);
 //
 //        auto baseColour = backgroundColour.withMultipliedSaturation (button.hasKeyboardFocus (true) ? 1.3f : 0.9f)

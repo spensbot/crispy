@@ -123,8 +123,8 @@ private:
         
         float glowSizeMin = 0.5f;
         float glowSizeMax = 0.7f;
-        float glowAlphaMin = 0.5f;
-        float glowAlphaMax = 0.8f;
+        float glowAlphaMin = 0.4f;
+        float glowAlphaMax = 0.7f;
         float glowSizeRange = glowSizeMax - glowSizeMin;
         float glowAlphaRange = glowAlphaMax - glowAlphaMin;
         
