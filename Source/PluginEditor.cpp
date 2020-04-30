@@ -77,8 +77,8 @@ void CrispySaturatorAudioProcessorEditor::updateWindow()
         width += debugWidth;
     }
     
-    Boolean isBypassed = matchedBypassButton.getToggleState();
-    Boolean isMoreControl = saturationPanel.moreControlButton.getToggleState();
+    bool isBypassed = matchedBypassButton.getToggleState();
+    bool isMoreControl = saturationPanel.moreControlButton.getToggleState();
     
     if (isBypassed) {
         bypassedVeil.setVisible(true);
@@ -87,13 +87,9 @@ void CrispySaturatorAudioProcessorEditor::updateWindow()
     }
     
     if (isMoreControl) {
-        moreControlPanel.setEnabled(true);
         height += moreControlHeight;
-    } else {
-        moreControlPanel.setEnabled(false);
     }
     
     setSize(width, height);
-    
-    repaint();    
+    moreControlPanel.setEnabled(false);
 }
