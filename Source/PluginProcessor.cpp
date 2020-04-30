@@ -1,6 +1,6 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-#include "Constants.h"
+#include "Params.h"
 
 //==============================================================================
 CrispySaturatorAudioProcessor::CrispySaturatorAudioProcessor() : 
@@ -14,48 +14,9 @@ CrispySaturatorAudioProcessor::CrispySaturatorAudioProcessor() :
                      #endif
                        ),
 #endif
-parameters (*this, &undoManager, Identifier ("APVTSTutorial"),
-{
-    std::make_unique<AudioParameterFloat> (Constants::ID_SATURATION, "Saturation", 0.0f, 1.0f, 0.0f),
-    
-    std::make_unique<AudioParameterFloat> (Constants::ID_ODD_EVEN_MIX, "Odd/Even Mix", 0.0f, 1.0f, 0.0f),
-    
-    std::make_unique<AudioParameterFloat> (Constants::ID_LOW_PASS_FREQ,
-                                           "Low Pass Frequency",
-                                           NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.3f),
-                                           20000.0f),
-    
-    std::make_unique<AudioParameterFloat> (Constants::ID_HI_PASS_FREQ,
-                                           "High Pass Frequency",
-                                           NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.3f),
-                                           20.0f),
-    
-    std::make_unique<AudioParameterFloat> (Constants::ID_AUTO_GAIN_AMOUNT, "Auto Gain Amount", 0.0f, 1.0f, 0.0f),
-    
-    std::make_unique<AudioParameterFloat> (Constants::ID_OVERSAMPLING,
-                                           "Oversampling",
-                                           NormalisableRange<float>(0.0f, 4.0f, 1.0f),
-                                           0.0f),
-    
-    std::make_unique<AudioParameterFloat> (Constants::ID_WET_GAIN,
-                                           "Wet Gain",
-                                           NormalisableRange<float>(-100.0f, 6.0f, 0.01f, 3.0f),
-                                           0.0f),
-    
-    std::make_unique<AudioParameterFloat> (Constants::ID_DRY_GAIN,
-                                           "Dry Gain",
-                                           NormalisableRange<float>(-100.0f, 6.0f, 0.01f, 3.0f),
-                                           0.0f),
-    
-    std::make_unique<AudioParameterBool> (Constants::ID_BYPASS, "Bypass", false),
-    std::make_unique<AudioParameterBool> (Constants::ID_MORE_CONTROL, "More Control", true)
-
-    // equation for calculating skew factor for center point
-    // std::log (0.5f) / std::log ((10.0 - 1.0) / (100.0 - 10.0))
-})
+parameters (*this, &undoManager, Identifier ("APVTSTutorial"), Params::createParameterLayout())
 , crispyEngine(parameters, *this)
 {
-    
 }
 
 CrispySaturatorAudioProcessor::~CrispySaturatorAudioProcessor()

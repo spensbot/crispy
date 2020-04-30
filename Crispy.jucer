@@ -34,9 +34,9 @@
             file="Source/SaturationVisualizer.h"/>
     </GROUP>
     <GROUP id="{DE5FA1BF-C7AE-FA4C-AC07-1613705D8EB5}" name="Source">
+      <FILE id="dV51e1" name="Params.h" compile="0" resource="0" file="Source/Params.h"/>
       <FILE id="TaSKBS" name="CrispyLookAndFeel.h" compile="0" resource="0"
             file="Source/CrispyLookAndFeel.h"/>
-      <FILE id="CQZh5o" name="Constants.h" compile="0" resource="0" file="Source/Constants.h"/>
       <FILE id="Ga3wGH" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="gR8fCK" name="PluginProcessor.h" compile="0" resource="0"

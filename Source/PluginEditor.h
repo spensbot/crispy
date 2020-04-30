@@ -4,7 +4,7 @@
 #include "PluginProcessor.h"
 #include "SaturationPanel.h"
 #include "MoreControlPanel.h"
-#include "Constants.h"
+#include "Params.h"
 #include "CrispyLookAndFeel.h"
 
 //==============================================================================

@@ -9,8 +9,8 @@ CrispySaturatorAudioProcessorEditor::CrispySaturatorAudioProcessorEditor (Crispy
 ,saturationPanel(parameters)
 ,moreControlPanel(parameters)
 {
-    bypass = parameters.getRawParameterValue(Constants::ID_BYPASS);
-    moreControl = parameters.getRawParameterValue(Constants::ID_MORE_CONTROL);
+    bypass = parameters.getRawParameterValue(Params::ID_BYPASS);
+    moreControl = parameters.getRawParameterValue(Params::ID_MORE_CONTROL);
     
     setLookAndFeel(&crispyLookAndFeel);
     
@@ -22,7 +22,7 @@ CrispySaturatorAudioProcessorEditor::CrispySaturatorAudioProcessorEditor (Crispy
     addAndMakeVisible(matchedBypassButton);
     matchedBypassButton.setButtonText("MATCHED BYPASS");
     matchedBypassButton.setClickingTogglesState(true);
-    matchedBypassButtonAttachment.reset(new ButtonAttachment(parameters, Constants::ID_BYPASS, matchedBypassButton));
+    matchedBypassButtonAttachment.reset(new ButtonAttachment(parameters, Params::ID_BYPASS, matchedBypassButton));
     matchedBypassButton.addListener(this);
     saturationPanel.moreControlButton.addListener(this);
     
