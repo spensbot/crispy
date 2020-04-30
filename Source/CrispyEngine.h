@@ -11,7 +11,7 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "Constants.h"
+#include "Params.h"
 #include "InputFilter.h"
 #include "SaturationProcessor.h"
 

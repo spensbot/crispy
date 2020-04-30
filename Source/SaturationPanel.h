@@ -11,7 +11,7 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "Constants.h"
+#include "Params.h"
 #include "OddEvenSlider.h"
 #include "SaturationVisualizerV2.h"
 #include "CrispyLookAndFeel.h"
@@ -38,8 +38,8 @@ public:
         oddEvenSlider.addListener(this);
         addAndMakeVisible(oddEvenSliderLabeled);
         
-        saturationSliderAttachment.reset(new SliderAttachment(parameters, Constants::ID_SATURATION, saturationSlider));
-        oddEvenSliderAttachment.reset(new SliderAttachment(parameters, Constants::ID_ODD_EVEN_MIX, oddEvenSlider));
+        saturationSliderAttachment.reset(new SliderAttachment(parameters, Params::ID_SATURATION, saturationSlider));
+        oddEvenSliderAttachment.reset(new SliderAttachment(parameters, Params::ID_ODD_EVEN_MIX, oddEvenSlider));
         
         addAndMakeVisible(moreControlButton);
         moreControlButton.setLookAndFeel(&moreControlButtonLookAndFeel);
@@ -47,7 +47,7 @@ public:
         updateMoreControlButton();
         moreControlButton.setClickingTogglesState(true);
         moreControlButton.addListener(this);
-        moreControlButtonAttachment.reset(new ButtonAttachment(parameters, Constants::ID_MORE_CONTROL, moreControlButton));
+        moreControlButtonAttachment.reset(new ButtonAttachment(parameters, Params::ID_MORE_CONTROL, moreControlButton));
         
         saturationVisualizer.reset(oddEvenSlider.getValue(), saturationSlider.getValue());
         

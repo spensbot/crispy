@@ -11,25 +11,25 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "Constants.h"
+#include "Params.h"
 
 class InputFilter : public dsp::ProcessorBase, public AudioProcessorValueTreeState::Listener {
 public:
     
     InputFilter(AudioProcessorValueTreeState& params) : parameters(params)
     {
-        parameters.addParameterListener(Constants::ID_LOW_PASS_FREQ, this);
-        parameters.addParameterListener(Constants::ID_HI_PASS_FREQ, this);
+        parameters.addParameterListener(Params::ID_LOW_PASS_FREQ, this);
+        parameters.addParameterListener(Params::ID_HI_PASS_FREQ, this);
     }
     
     void prepare (const dsp::ProcessSpec& spec) override
     {
         sampleRate = spec.sampleRate;
         
-        float lowPassFreq = *parameters.getRawParameterValue(Constants::ID_LOW_PASS_FREQ);
+        float lowPassFreq = *parameters.getRawParameterValue(Params::ID_LOW_PASS_FREQ);
         setLowPassFreq(lowPassFreq);
         
-        float hiPassFreq = *parameters.getRawParameterValue(Constants::ID_HI_PASS_FREQ);
+        float hiPassFreq = *parameters.getRawParameterValue(Params::ID_HI_PASS_FREQ);
         setHiPassFreq(hiPassFreq);
         
         processorChain.prepare(spec);
@@ -47,11 +47,11 @@ public:
     
     void parameterChanged (const String& parameterID, float newValue) override
     {
-        if (parameterID == Constants::ID_LOW_PASS_FREQ)
+        if (parameterID == Params::ID_LOW_PASS_FREQ)
         {
             setLowPassFreq(newValue);
         }
-        else if (parameterID == Constants::ID_HI_PASS_FREQ)
+        else if (parameterID == Params::ID_HI_PASS_FREQ)
         {
             setHiPassFreq(newValue);
         }
@@ -107,18 +107,18 @@ public:
     
     InputFilterVariable(AudioProcessorValueTreeState& params) : parameters(params)
     {
-        parameters.addParameterListener(Constants::ID_LOW_PASS_FREQ, this);
-        parameters.addParameterListener(Constants::ID_HI_PASS_FREQ, this);
+        parameters.addParameterListener(Params::ID_LOW_PASS_FREQ, this);
+        parameters.addParameterListener(Params::ID_HI_PASS_FREQ, this);
     }
     
     void prepare (const dsp::ProcessSpec& spec) override
     {
         sampleRate = spec.sampleRate;
         
-        float lowPassFreq = *parameters.getRawParameterValue(Constants::ID_LOW_PASS_FREQ);
+        float lowPassFreq = *parameters.getRawParameterValue(Params::ID_LOW_PASS_FREQ);
         setLowPassFreq(lowPassFreq);
         
-        float hiPassFreq = *parameters.getRawParameterValue(Constants::ID_HI_PASS_FREQ);
+        float hiPassFreq = *parameters.getRawParameterValue(Params::ID_HI_PASS_FREQ);
         setHiPassFreq(hiPassFreq);
         
         processorChain.prepare(spec);
@@ -136,11 +136,11 @@ public:
     
     void parameterChanged (const String& parameterID, float newValue) override
     {
-        if (parameterID == Constants::ID_LOW_PASS_FREQ)
+        if (parameterID == Params::ID_LOW_PASS_FREQ)
         {
             setLowPassFreq(newValue);
         }
-        else if (parameterID == Constants::ID_HI_PASS_FREQ)
+        else if (parameterID == Params::ID_HI_PASS_FREQ)
         {
             setHiPassFreq(newValue);
         }

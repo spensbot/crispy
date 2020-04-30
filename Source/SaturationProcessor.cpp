@@ -15,14 +15,14 @@ SaturationProcessor::SaturationProcessor(AudioProcessorValueTreeState& params, C
 : parameters(params)
 , crispyEngine(engine)
 {
-    parameters.addParameterListener(Constants::ID_SATURATION, this);
-    parameters.addParameterListener(Constants::ID_ODD_EVEN_MIX, this);
-    parameters.addParameterListener(Constants::ID_AUTO_GAIN_AMOUNT, this);
-    parameters.addParameterListener(Constants::ID_OVERSAMPLING, this);
+    parameters.addParameterListener(Params::ID_SATURATION, this);
+    parameters.addParameterListener(Params::ID_ODD_EVEN_MIX, this);
+    parameters.addParameterListener(Params::ID_AUTO_GAIN_AMOUNT, this);
+    parameters.addParameterListener(Params::ID_OVERSAMPLING, this);
     
-    oddEvenMix = parameters.getRawParameterValue(Constants::ID_ODD_EVEN_MIX);
-    saturation = parameters.getRawParameterValue(Constants::ID_SATURATION);
-    isMoreControl = parameters.getRawParameterValue(Constants::ID_MORE_CONTROL);
+    oddEvenMix = parameters.getRawParameterValue(Params::ID_ODD_EVEN_MIX);
+    saturation = parameters.getRawParameterValue(Params::ID_SATURATION);
+    isMoreControl = parameters.getRawParameterValue(Params::ID_MORE_CONTROL);
 }
 
 void SaturationProcessor::prepare (const dsp::ProcessSpec& _spec)
@@ -66,19 +66,19 @@ void SaturationProcessor::reset ()
 
 void SaturationProcessor::parameterChanged (const String& parameterID, float newValue)
 {
-    if (parameterID == Constants::ID_SATURATION)
+    if (parameterID == Params::ID_SATURATION)
     {
         saturator.setOdd(newValue);
     }
-    else if (parameterID == Constants::ID_ODD_EVEN_MIX)
+    else if (parameterID == Params::ID_ODD_EVEN_MIX)
     {
         saturator.setEven(newValue);
     }
-    else if (parameterID == Constants::ID_AUTO_GAIN_AMOUNT)
+    else if (parameterID == Params::ID_AUTO_GAIN_AMOUNT)
     {
         autoGain.setAmount(newValue);
     }
-    else if (parameterID == Constants::ID_OVERSAMPLING)
+    else if (parameterID == Params::ID_OVERSAMPLING)
     {
         setOversamplingEngine( int(newValue) );
     }
@@ -108,8 +108,8 @@ void SaturationProcessor::setOversamplingEngine(int index){
 
 void SaturationProcessor::updateParameters()
 {
-    saturator.setOdd(*parameters.getRawParameterValue(Constants::ID_SATURATION));
-    saturator.setEven(*parameters.getRawParameterValue(Constants::ID_ODD_EVEN_MIX));
-    autoGain.setAmount(*parameters.getRawParameterValue(Constants::ID_AUTO_GAIN_AMOUNT));
-    setOversamplingEngine( int( *parameters.getRawParameterValue(Constants::ID_OVERSAMPLING) ) );
+    saturator.setOdd(*parameters.getRawParameterValue(Params::ID_SATURATION));
+    saturator.setEven(*parameters.getRawParameterValue(Params::ID_ODD_EVEN_MIX));
+    autoGain.setAmount(*parameters.getRawParameterValue(Params::ID_AUTO_GAIN_AMOUNT));
+    setOversamplingEngine( int( *parameters.getRawParameterValue(Params::ID_OVERSAMPLING) ) );
 }

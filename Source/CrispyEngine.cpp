@@ -17,16 +17,16 @@ CrispyEngine::CrispyEngine(AudioProcessorValueTreeState& params, AudioProcessor&
 , inputFilter(params)
 , saturation(params, *this)
 {
-    parameters.addParameterListener(Constants::ID_BYPASS, this);
-    parameters.addParameterListener(Constants::ID_DRY_GAIN, this);
-    parameters.addParameterListener(Constants::ID_WET_GAIN, this);
+    parameters.addParameterListener(Params::ID_BYPASS, this);
+    parameters.addParameterListener(Params::ID_DRY_GAIN, this);
+    parameters.addParameterListener(Params::ID_WET_GAIN, this);
     
     const int bufferSize = 100000;
     
     inBuffer.prepare(bufferSize);
     outBuffer.prepare(bufferSize);
     
-    isMoreControl = parameters.getRawParameterValue(Constants::ID_MORE_CONTROL);
+    isMoreControl = parameters.getRawParameterValue(Params::ID_MORE_CONTROL);
     
     latencyDelay.setBufferSamples(1000);
 }
@@ -71,13 +71,13 @@ void CrispyEngine::reset()
 
 void CrispyEngine::parameterChanged(const String& parameterID, float newValue )
 {
-    if (parameterID == Constants::ID_DRY_GAIN) {
+    if (parameterID == Params::ID_DRY_GAIN) {
         dryWetMix.setDryDecibels(newValue);
     }
-    else if (parameterID == Constants::ID_WET_GAIN) {
+    else if (parameterID == Params::ID_WET_GAIN) {
         dryWetMix.setWetDecibels(newValue);
     }
-    else if (parameterID == Constants::ID_BYPASS) {
+    else if (parameterID == Params::ID_BYPASS) {
         if (newValue > 0.5) {
             matchedBypass.setActive(true);
         } else {
@@ -96,8 +96,8 @@ void CrispyEngine::setLatencySamples(float newLatency)
 
 void CrispyEngine::updateParameters()
 {
-    dryWetMix.setDryDecibels(*parameters.getRawParameterValue(Constants::ID_DRY_GAIN));
-    dryWetMix.setWetDecibels(*parameters.getRawParameterValue(Constants::ID_WET_GAIN));
-    matchedBypass.setActive(*parameters.getRawParameterValue(Constants::ID_BYPASS));
+    dryWetMix.setDryDecibels(*parameters.getRawParameterValue(Params::ID_DRY_GAIN));
+    dryWetMix.setWetDecibels(*parameters.getRawParameterValue(Params::ID_WET_GAIN));
+    matchedBypass.setActive(*parameters.getRawParameterValue(Params::ID_BYPASS));
 }
 

@@ -11,7 +11,7 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "Constants.h"
+#include "Params.h"
 
 //==============================================================================
 /*
@@ -22,20 +22,20 @@ public:
     MoreControlPanel(AudioProcessorValueTreeState& params) : parameters(params)
     {
 //        addAndMakeVisible(oversamplingBox);
-//        oversamplingBoxAttachment.reset(new ComboBoxAttachment(parameters, Constants::ID_OVERSAMPLING, oversamplingBox));
+//        oversamplingBoxAttachment.reset(new ComboBoxAttachment(parameters, Params::ID_OVERSAMPLING, oversamplingBox));
         
-        initSlider(autoGainAmountSlider, autoGainAmountSliderAttachment, Constants::ID_AUTO_GAIN_AMOUNT);
-        initSlider(oversamplingSlider, oversamplingSliderAttachment, Constants::ID_OVERSAMPLING);
+        initSlider(autoGainAmountSlider, autoGainAmountSliderAttachment, Params::ID_AUTO_GAIN_AMOUNT);
+        initSlider(oversamplingSlider, oversamplingSliderAttachment, Params::ID_OVERSAMPLING);
         oversamplingSlider.addListener(this);
-        initSlider(dryGainSlider, dryGainSliderAttachment, Constants::ID_DRY_GAIN);
+        initSlider(dryGainSlider, dryGainSliderAttachment, Params::ID_DRY_GAIN);
         dryGainSlider.setSliderStyle(Slider::LinearVertical);
         dryGainSlider.setPopupDisplayEnabled(true, true, this);
-        initSlider(wetGainSlider, wetGainSliderAttachment, Constants::ID_WET_GAIN);
+        initSlider(wetGainSlider, wetGainSliderAttachment, Params::ID_WET_GAIN);
         wetGainSlider.setSliderStyle(Slider::LinearVertical);
         wetGainSlider.setPopupDisplayEnabled(true, true, this);
-        initSlider(hpSlider, hpSliderAttachment, Constants::ID_HI_PASS_FREQ);
+        initSlider(hpSlider, hpSliderAttachment, Params::ID_HI_PASS_FREQ);
         hpSlider.setPopupDisplayEnabled(true, true, this);
-        initSlider(lpSlider, lpSliderAttachment, Constants::ID_LOW_PASS_FREQ);
+        initSlider(lpSlider, lpSliderAttachment, Params::ID_LOW_PASS_FREQ);
         lpSlider.setPopupDisplayEnabled(true, true, this);
         
         initLabel(autoGainLabel, &autoGainAmountSlider, "Auto-Gain");
