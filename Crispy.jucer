@@ -6,8 +6,6 @@
               version="0.50" pluginFormats="buildAU,buildVST3" pluginDesc="A Powerful Saturation Plugin"
               pluginChannelConfigs="{1, 1} , {2, 2}" pluginVST3Category="Distortion">
   <MAINGROUP id="pF94Py" name="Crispy">
-    <FILE id="J68Aew" name="Montserrat-Regular.ttf" compile="0" resource="1"
-          file="fonts/Montserrat/Montserrat-Regular.ttf"/>
     <FILE id="ryR4cG" name="Montserrat-ExtraLight.ttf" compile="0" resource="1"
           file="fonts/Montserrat/Montserrat-ExtraLight.ttf"/>
     <FILE id="rDfq4L" name="Montserrat-Light.ttf" compile="0" resource="1"
