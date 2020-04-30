@@ -3,7 +3,7 @@
 
 //==============================================================================
 CrispySaturatorAudioProcessorEditor::CrispySaturatorAudioProcessorEditor (CrispySaturatorAudioProcessor& p)
-: AudioProcessorEditor (&p)
+: AudioProcessorEditor (&p)	
 ,processor (p)
 ,parameters(p.parameters)
 ,saturationPanel(parameters)
@@ -77,8 +77,8 @@ void CrispySaturatorAudioProcessorEditor::updateWindow()
         width += debugWidth;
     }
     
-    Boolean isBypassed = matchedBypassButton.getToggleState();
-    Boolean isMoreControl = saturationPanel.moreControlButton.getToggleState();
+    bool isBypassed = matchedBypassButton.getToggleState();
+    bool isMoreControl = saturationPanel.moreControlButton.getToggleState();
     
     if (isBypassed) {
         bypassedVeil.setVisible(true);
