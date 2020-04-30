@@ -14,10 +14,11 @@ public:
         setColour (Label::textColourId, colourFont);
         
         //Typeface::Ptr tface = Typeface::createSystemTypefaceFor(BinaryData::MontserratExtraLight_ttf, BinaryData::MontserratExtraLight_ttfSize);
-        Typeface::Ptr tface = Typeface::createSystemTypefaceFor(BinaryData::MontserratLight_ttf, BinaryData::MontserratLight_ttfSize);
+        //Typeface::Ptr tface = Typeface::createSystemTypefaceFor(BinaryData::MontserratLight_ttf, BinaryData::MontserratLight_ttfSize);
+        Typeface::Ptr tface = Typeface::createSystemTypefaceFor(BinaryData::MontserratRegular_ttf, BinaryData::MontserratRegular_ttfSize);
         setDefaultSansSerifTypeface (tface);
-        //LookAndFeel::getDefaultLookAndFeel().setDefaultSansSerifTypeface(tface);
-        LookAndFeel::getDefaultLookAndFeel().setDefaultSansSerifTypefaceName("Avenir Light");
+        LookAndFeel::getDefaultLookAndFeel().setDefaultSansSerifTypeface(tface);
+        //LookAndFeel::getDefaultLookAndFeel().setDefaultSansSerifTypefaceName("Avenir Light");
     }
     
     //==============================================================================
@@ -106,12 +107,6 @@ public:
             g.setColour (colourAccent);
             g.drawRoundedRectangle (bounds, cornerSize, 3.0f);
         }
-    }
-    
-    Typeface::Ptr getTypefaceForFont(const Font& f) override
-    {
-        static Typeface::Ptr myFont = Typeface::createSystemTypefaceFor(BinaryData::MontserratExtraLight_ttf, BinaryData::MontserratExtraLight_ttfSize);
-        return myFont;
     }
     
     inline static const Colour
