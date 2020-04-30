@@ -91,5 +91,4 @@ void CrispySaturatorAudioProcessorEditor::updateWindow()
     }
     
     setSize(width, height);
-    moreControlPanel.setEnabled(false);
 }
