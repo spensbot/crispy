@@ -3,7 +3,7 @@
 
 //==============================================================================
 CrispySaturatorAudioProcessorEditor::CrispySaturatorAudioProcessorEditor (CrispySaturatorAudioProcessor& p)
-: AudioProcessorEditor (&p)
+: AudioProcessorEditor (&p)	
 ,processor (p)
 ,parameters(p.parameters)
 ,saturationPanel(parameters)
