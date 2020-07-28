@@ -115,11 +115,17 @@ public:
     {
         sampleRate = spec.sampleRate;
         
+        auto& lowPassFilter = processorChain.get<lowPassIndex>();
+        lowPassFilter.setType(dsp::StateVariableTPTFilterType::lowpass);
+        lowPassFilter.setResonance(1 / sqrt(2));
         float lowPassFreq = *parameters.getRawParameterValue(Params::ID_LOW_PASS_FREQ);
-        setLowPassFreq(lowPassFreq);
+        lowPassFilter.setCutoffFrequency(lowPassFreq);
         
+        auto& hiPassFilter = processorChain.get<hiPassIndex>();
+        hiPassFilter.setType(dsp::StateVariableTPTFilterType::highpass);
+        hiPassFilter.setResonance(1 / sqrt(2));
         float hiPassFreq = *parameters.getRawParameterValue(Params::ID_HI_PASS_FREQ);
-        setHiPassFreq(hiPassFreq);
+        hiPassFilter.setCutoffFrequency(hiPassFreq);
         
         processorChain.prepare(spec);
     }
@@ -158,23 +164,17 @@ private:
     
     AudioProcessorValueTreeState& parameters;
     
-    //using Filter = dsp::IIR::Filter<float>;
-    using Filter = dsp::StateVariableFilter::Filter<float>;
-    using Parameters = dsp::StateVariableFilter::Parameters<float>;
-    //using FilterCoefs = dsp::IIR::Coefficients<float>;
-    using DuplicatedFilter = dsp::ProcessorDuplicator<Filter, Parameters>;
-
-    dsp::ProcessorChain<DuplicatedFilter, DuplicatedFilter> processorChain;
+    using Filter = dsp::StateVariableTPTFilter<float>;
+    dsp::ProcessorChain<Filter, Filter> processorChain;
     
     void setLowPassFreq(float newFreq){
         auto& lowPassFilter = processorChain.get<lowPassIndex>();
-        lowPassFilter.state->setCutOffFrequency(sampleRate, newFreq);
+        lowPassFilter.setCutoffFrequency(newFreq);
     }
     
     void setHiPassFreq(float newFreq){
         auto& hiPassFilter = processorChain.template get<hiPassIndex>();
-        hiPassFilter.state->type = Parameters::Type::highPass;
-        hiPassFilter.state->setCutOffFrequency(sampleRate, newFreq);
+        hiPassFilter.setCutoffFrequency(newFreq);
     }
 };
 

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="sXUzY4" name="Crispy" projectType="audioplug" jucerVersion="5.4.7"
-              companyName="Sailing To Mars" companyWebsite="sailingtomars.com"
-              companyEmail="spenser0saling@gmail.com" cppLanguageStandard="17"
-              version="0.50" pluginFormats="buildAU,buildVST3" pluginDesc="A Powerful Saturation Plugin"
-              pluginChannelConfigs="{1, 1} , {2, 2}" pluginVST3Category="Distortion">
+<JUCERPROJECT id="sXUzY4" name="Crispy" projectType="audioplug" companyName="Sailing To Mars"
+              companyWebsite="sailingtomars.com" companyEmail="spenser0saling@gmail.com"
+              cppLanguageStandard="17" version="0.50" pluginFormats="buildAU,buildVST3"
+              pluginDesc="A Powerful Saturation Plugin" pluginChannelConfigs="{1, 1} , {2, 2}"
+              pluginVST3Category="Distortion" displaySplashScreen="1" jucerFormatVersion="1">
   <MAINGROUP id="pF94Py" name="Crispy">
     <FILE id="nToHw5" name="Montserrat-Regular.ttf" compile="0" resource="1"
           file="fonts/Montserrat/Montserrat-Regular.ttf"/>

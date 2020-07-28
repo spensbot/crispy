@@ -31,14 +31,14 @@ dx = 0.01
 #X values
 xArray = np.arange(-xMax, xMax, dx)
 signal = []
-
 for x in xArray:
     signal.append(math.sin(x))
 
 plt.plot(xArray, signal)
 
 
-squishFactors = [0.01, 0.1, .5, 2, 10, 100]
+# squishFactors = [0.01, 0.1, .5, 2, 10, 100]
+squishFactors = [1, 10, 100]
 
 for sf in squishFactors:
     modifiedSignal = []
